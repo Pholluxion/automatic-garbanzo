@@ -1,7 +1,7 @@
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+    "walletAppBarTitle": "Wallet",
+    "@walletAppBarTitle": {
+        "description": "Text shown in the AppBar of the Wallet Page"
     }
 }

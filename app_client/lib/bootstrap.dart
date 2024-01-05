@@ -1,24 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
-class AppBlocObserver extends BlocObserver {
-  const AppBlocObserver();
+import 'package:bloc/bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    log('onChange(${bloc.runtimeType}, $change)');
-  }
-
-  @override
-  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    log('onError(${bloc.runtimeType}, $error, $stackTrace)');
-    super.onError(bloc, error, stackTrace);
-  }
-}
+import 'package:app_client/core/core.dart';
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
@@ -27,7 +15,13 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  // Add cross-flavor configuration here
+  await Supabase.initialize(url: Constants.supabaseUrl, anonKey: Constants.supabaseKey);
+  ServiceLocator.initialize();
+  await ServiceLocator.instance.get<SupabaseClient>().auth.signOut();
+  await ServiceLocator.instance
+      .get<SupabaseClient>()
+      .auth
+      .signInWithPassword(password: '12345678', email: 'test@test.com');
 
   runApp(await builder());
 }
