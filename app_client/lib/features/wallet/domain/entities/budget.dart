@@ -1,33 +1,22 @@
 import 'package:app_client/features/wallet/domain/domain.dart';
 
-class Pocket implements Entity<Pocket> {
+class Budget implements Entity<Budget> {
   final int id;
-  final int idBudget;
   final String name;
   final String description;
   final DateTime createdAt;
 
-  const Pocket({
+  Budget({
     required this.id,
-    required this.idBudget,
     required this.name,
     required this.description,
     required this.createdAt,
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        description,
-        createdAt,
-      ];
-
-  @override
-  Pocket copyWith(Map<String, dynamic> data) {
-    return Pocket(
+  Budget copyWith(Map<String, dynamic> data) {
+    return Budget(
       id: data['id'] ?? id,
-      idBudget: data['id_budget'] ?? idBudget,
       name: data['name'] ?? name,
       description: data['description'] ?? description,
       createdAt: data['created_at'] ?? createdAt,
@@ -35,14 +24,16 @@ class Pocket implements Entity<Pocket> {
   }
 
   @override
+  List<Object?> get props => [id, name, description];
+
+  @override
+  bool? get stringify => true;
+
+  @override
   Map<String, dynamic> toJson() {
     return {
-      'id_budget': idBudget,
       'name': name,
       'description': description,
     };
   }
-
-  @override
-  bool? get stringify => true;
 }

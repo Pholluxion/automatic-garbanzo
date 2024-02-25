@@ -12,7 +12,7 @@ final class UserPocketInitial extends UserPocketState {}
 final class UserPocketLoading extends UserPocketState {}
 
 final class UserPocketLoaded extends UserPocketState {
-  final List<UserPocket> userPockets;
+  final List<UserBudget> userPockets;
 
   const UserPocketLoaded(this.userPockets);
 

@@ -1,3 +1,4 @@
+export 'composable.dart';
 export 'copy_with.dart';
 export 'entity.dart';
 export 'mappeable.dart';

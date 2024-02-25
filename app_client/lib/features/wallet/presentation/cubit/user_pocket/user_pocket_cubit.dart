@@ -7,7 +7,7 @@ part 'user_pocket_state.dart';
 class UserPocketCubit extends Cubit<UserPocketState> {
   UserPocketCubit(this._userPocketService) : super(UserPocketInitial());
 
-  final UserPocketService _userPocketService;
+  final UserBudgetService _userPocketService;
 
   void getUserPockets() async {
     emit(UserPocketLoading());

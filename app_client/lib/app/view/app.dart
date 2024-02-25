@@ -18,17 +18,30 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => EntryCubit(
             ServiceLocator.instance.get<EntryService>(),
-          )..getEntries(),
+          ),
         ),
         BlocProvider(
           create: (context) => PocketCubit(
             ServiceLocator.instance.get<PocketService>(),
-          )..getPockets(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => BudgetCubit(
+            ServiceLocator.instance.get<BudgetService>(),
+          ),
         ),
         BlocProvider(
           create: (context) => UserPocketCubit(
-            ServiceLocator.instance.get<UserPocketService>(),
-          )..getUserPockets(),
+            ServiceLocator.instance.get<UserBudgetService>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ComponentCubit(
+            ServiceLocator.instance.get<EntryService>(),
+            ServiceLocator.instance.get<PocketService>(),
+            ServiceLocator.instance.get<BudgetService>(),
+            // ServiceLocator.instance.get<UserBudgetService>(),
+          )..getComponents(),
         ),
       ],
       child: MaterialApp(
@@ -40,11 +53,7 @@ class App extends StatelessWidget {
         ),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        initialRoute: '/pocket',
-        routes: {
-          '/pocket': (context) => const PocketPage(),
-          '/pocket_entries': (context) => const EntryPage(),
-        },
+        home: const ComponentPage(),
       ),
     );
   }

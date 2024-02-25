@@ -18,9 +18,11 @@ abstract class ServiceLocator {
     instance
       ..registerSingleton<EntryRepository>(EntryRepositoryImpl(instance.get<SupabaseClient>()))
       ..registerSingleton<PocketRepository>(PocketRepositoryImpl(instance.get<SupabaseClient>()))
-      ..registerSingleton<UserPocketRepository>(UserPocketRepositoryImpl(instance.get<SupabaseClient>()))
+      ..registerSingleton<UserBudgetRepository>(UserBudgetRepositoryImpl(instance.get<SupabaseClient>()))
+      ..registerSingleton<BudgetRepository>(BudgetRepositoryImpl(instance.get<SupabaseClient>()))
       ..registerSingleton<EntryService>(EntryServiceImpl(instance.get<EntryRepository>()))
       ..registerSingleton<PocketService>(PocketServiceImpl(instance.get<PocketRepository>()))
-      ..registerSingleton<UserPocketService>(UserPocketServiceImpl(instance.get<UserPocketRepository>()));
+      ..registerSingleton<UserBudgetService>(UserBudgetServiceImpl(instance.get<UserBudgetRepository>()))
+      ..registerSingleton<BudgetService>(BudgetServiceImpl(instance.get<BudgetRepository>()));
   }
 }

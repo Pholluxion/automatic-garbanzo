@@ -1,17 +1,19 @@
-import 'package:app_client/features/wallet/data/data.dart';
-import 'package:app_client/features/wallet/domain/domain.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class UserPocketRepositoryImpl extends UserPocketRepository {
+import 'package:app_client/core/utils/tables.dart';
+import 'package:app_client/features/wallet/data/data.dart';
+import 'package:app_client/features/wallet/domain/domain.dart';
+
+class UserBudgetRepositoryImpl extends UserBudgetRepository {
   final SupabaseClient _supabaseClient;
 
-  UserPocketRepositoryImpl(this._supabaseClient);
+  UserBudgetRepositoryImpl(this._supabaseClient);
 
   @override
-  Future<bool> create(UserPocket entity) async {
+  Future<bool> create(UserBudget entity) async {
     try {
       final response = await _supabaseClient
-          .from('user_pocket')
+          .from(Tables.userPocket)
           .upsert(
             entity.toJson(),
           )
@@ -25,7 +27,7 @@ class UserPocketRepositoryImpl extends UserPocketRepository {
   @override
   Future<bool> delete(int id) async {
     try {
-      await _supabaseClient.from('user_pocket').delete().eq(
+      await _supabaseClient.from(Tables.userPocket).delete().eq(
             'id',
             id,
           );
@@ -37,21 +39,30 @@ class UserPocketRepositoryImpl extends UserPocketRepository {
   }
 
   @override
-  Future<List<UserPocket>> getAll() async {
+  Future<List<UserBudget>> getAll() async {
     try {
-      final response = await _supabaseClient.from('user_pocket').select();
+      final userId = _supabaseClient.auth.currentUser?.id ?? '';
+      final response = await _supabaseClient
+          .from(
+            Tables.userPocket,
+          )
+          .select()
+          .eq(
+            'id_user',
+            userId,
+          );
 
-      return response.map((e) => UserPocketModel.fromJson(e)).toList();
+      return response.map((e) => UserBudgetModel.fromJson(e)).toList();
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
   @override
-  Future<UserPocket> getById(int id) async {
+  Future<UserBudget> getById(int id) async {
     try {
       final response = await _supabaseClient
-          .from('user_pocket')
+          .from(Tables.userPocket)
           .select()
           .eq(
             'id',
@@ -59,22 +70,22 @@ class UserPocketRepositoryImpl extends UserPocketRepository {
           )
           .single();
 
-      return UserPocketModel.fromJson(response);
+      return UserBudgetModel.fromJson(response);
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
   @override
-  Future<UserPocket> update(UserPocket entity) async {
+  Future<UserBudget> update(UserBudget entity) async {
     try {
       final response = await _supabaseClient
-          .from('user_pocket')
+          .from(Tables.userPocket)
           .upsert(
             entity.toJson(),
           )
           .select();
-      return UserPocketModel.fromJson(response.first);
+      return UserBudgetModel.fromJson(response.first);
     } catch (e) {
       throw Exception(e.toString());
     }
