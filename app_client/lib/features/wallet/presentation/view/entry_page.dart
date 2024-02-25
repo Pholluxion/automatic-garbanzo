@@ -78,14 +78,19 @@ class EntryPage extends StatelessWidget {
                     },
                     child: ListTile(
                       title: Text(entry.getName()),
-                      subtitle: Text(entry.entry.description),
+                      subtitle: Text(entry.entry.dateFormatted),
                       leading: Text(
                         entry.entry.formattedAmount,
                         style: TextStyle(
                           color: entry.entry.type == EntryType.income ? Colors.green : Colors.red,
                         ),
                       ),
-                      trailing: Text(entry.entry.dateFormatted),
+                      trailing: IconButton(
+                        onPressed: () {
+                          context.read<ComponentCubit>().deleteEntry(entry.entry.id);
+                        },
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                      ),
                     ),
                   );
                 },
