@@ -84,4 +84,14 @@ class EntryRepositoryImpl implements EntryRepository {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Future<List<Entry>> getAllById(int params) async {
+    try {
+      final response = await _supabaseClient.from(Tables.entry).select().eq('id_pocket', params);
+      return response.map((e) => EntryModel.fromJson(e)).toList();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

@@ -4,6 +4,7 @@ class PocketModel extends Pocket {
   PocketModel({
     required super.id,
     required super.name,
+    required super.amount,
     required super.idBudget,
     required super.description,
     required super.createdAt,
@@ -13,6 +14,7 @@ class PocketModel extends Pocket {
     return PocketModel(
       id: data['id'],
       name: data['name'],
+      amount: data['amount'],
       idBudget: data['id_budget'],
       description: data['description'],
       createdAt: DateTime.parse(data['created_at']),

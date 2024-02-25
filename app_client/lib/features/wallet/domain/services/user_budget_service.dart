@@ -1,3 +1,3 @@
 import 'package:app_client/features/wallet/domain/domain.dart';
 
-abstract class UserBudgetService implements Service<UserBudget> {}
+abstract class UserBudgetService implements Readable<UserBudget>, Writable<UserBudget> {}

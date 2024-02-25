@@ -29,4 +29,9 @@ class EntryServiceImpl implements EntryService {
   Future<Entry> update(Entry entity) async {
     return await _entryRepository.update(entity);
   }
+
+  @override
+  Future<List<Entry>> getAllById(int params) async {
+    return _entryRepository.getAllById(params);
+  }
 }

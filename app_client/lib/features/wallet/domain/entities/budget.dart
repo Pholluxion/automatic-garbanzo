@@ -24,7 +24,7 @@ class Budget implements Entity<Budget> {
   }
 
   @override
-  List<Object?> get props => [id, name, description];
+  List<Object?> get props => [id, name, description, createdAt];
 
   @override
   bool? get stringify => true;

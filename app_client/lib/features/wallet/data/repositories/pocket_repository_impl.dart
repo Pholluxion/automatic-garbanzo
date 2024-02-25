@@ -86,4 +86,18 @@ class PocketRepositoryImpl implements PocketRepository {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Future<List<Pocket>> getAllById(int params) async {
+    try {
+      final response = await _supabaseClient.from(Tables.pocket).select().eq(
+            'id_budget',
+            params,
+          );
+
+      return response.map((e) => PocketModel.fromJson(e)).toList();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

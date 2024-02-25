@@ -56,4 +56,76 @@ class ComponentCubit extends Cubit<ComponentState> {
       emit(ComponentError(e.toString()));
     }
   }
+
+  void createEntry(Entry entry) async {
+    try {
+      await _entryRepository.create(entry);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  List<Component> getAllEntries(int pocketId) {
+    List<EntryComponent> entries = [];
+
+    if (state is ComponentLoaded) {
+      final componentLoaded = state as ComponentLoaded;
+
+      for (var element in componentLoaded.components) {
+        final pocket = element.components as List<PocketComponent>;
+        for (var pocketComponent in pocket) {
+          if (pocketComponent.pocket.id == pocketId) {
+            entries = pocketComponent.components as List<EntryComponent>;
+          }
+        }
+      }
+    }
+
+    return entries;
+  }
+
+  List<Component> getAllPockets(int budgetId) {
+    List<PocketComponent> pockets = [];
+
+    if (state is ComponentLoaded) {
+      final componentLoaded = state as ComponentLoaded;
+      final budgetComponent = componentLoaded.components.firstWhere(
+        (element) => element is BudgetComponent && element.budget.id == budgetId,
+      );
+
+      final budget = budgetComponent as BudgetComponent;
+
+      pockets = budget.components.map((e) => (e as PocketComponent)).toList();
+    }
+
+    return pockets;
+  }
+
+  void deleteEntry(int id) async {
+    try {
+      await _entryRepository.delete(id);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  void createPocket(Pocket pocket) async {
+    try {
+      await _pocketService.create(pocket);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  void createBudget(Budget budget) async {
+    try {
+      await _budgetService.create(budget);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
 }

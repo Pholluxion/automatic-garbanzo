@@ -6,7 +6,7 @@ class EntryModel extends Entry implements Mappeable<Entry, EntryModel> {
     required super.pocketId,
     required super.description,
     required super.amount,
-    required super.date,
+    required super.createdAt,
     required super.type,
   });
 
@@ -16,7 +16,7 @@ class EntryModel extends Entry implements Mappeable<Entry, EntryModel> {
       pocketId: data['id_pocket'],
       description: data['description'],
       amount: data['amount'],
-      date: DateTime.parse(data['date']),
+      createdAt: DateTime.parse(data['created_at']),
       type: EntryType.fromName(data['type']),
     );
   }
@@ -28,7 +28,7 @@ class EntryModel extends Entry implements Mappeable<Entry, EntryModel> {
       pocketId: entity.pocketId,
       description: entity.description,
       amount: entity.amount,
-      date: entity.date,
+      createdAt: entity.createdAt,
       type: entity.type,
     );
   }
@@ -40,7 +40,7 @@ class EntryModel extends Entry implements Mappeable<Entry, EntryModel> {
       pocketId: model.pocketId,
       description: model.description,
       amount: model.amount,
-      date: model.date,
+      createdAt: model.createdAt,
       type: model.type,
     );
   }
