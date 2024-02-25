@@ -15,13 +15,14 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  await Supabase.initialize(url: Constants.supabaseUrl, anonKey: Constants.supabaseKey);
-  ServiceLocator.initialize();
-  await ServiceLocator.instance.get<SupabaseClient>().auth.signOut();
-  await ServiceLocator.instance
-      .get<SupabaseClient>()
-      .auth
-      .signInWithPassword(password: '12345678', email: 'test@test.com');
+  await ServiceLocator.initialize();
+
+  /// auth with test user
+  ///
+  await (ServiceLocator.instance.get<SupabaseClient>().auth.signInWithPassword(
+        email: Constants.testEmail,
+        password: Constants.testPassword,
+      ));
 
   runApp(await builder());
 }
