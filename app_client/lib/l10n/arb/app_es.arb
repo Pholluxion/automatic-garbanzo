@@ -1,7 +1,0 @@
-{
-    "@@locale": "es",
-    "walletAppBarTitle": "Cartera",
-    "@walletAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página de la cartera"
-    }
-}
