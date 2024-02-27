@@ -77,7 +77,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
   }
 
   @override
-  Future<UserBudget> update(UserBudget entity) async {
+  Future<bool> update(UserBudget entity) async {
     try {
       final response = await _supabaseClient
           .from(Tables.userPocket)
@@ -85,7 +85,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
             entity.toJson(),
           )
           .select();
-      return UserBudgetModel.fromJson(response.first);
+      return response.isNotEmpty;
     } catch (e) {
       throw Exception(e.toString());
     }

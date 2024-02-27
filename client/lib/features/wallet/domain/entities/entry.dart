@@ -34,15 +34,21 @@ class Entry implements Entity<Entry> {
     return simpleCurrency.format(amount);
   }
 
-  @override
-  Entry copyWith(Map<String, dynamic> data) {
+  Entry copyWith({
+    int? id,
+    int? pocketId,
+    String? description,
+    double? amount,
+    DateTime? createdAt,
+    EntryType? type,
+  }) {
     return Entry(
-      id: data['id'] ?? id,
-      pocketId: data['id_pocket'] ?? pocketId,
-      description: data['description'] ?? description,
-      amount: data['amount'] ?? amount,
-      createdAt: data['created_at'] ?? createdAt,
-      type: data['type'] ?? type,
+      id: id ?? this.id,
+      pocketId: pocketId ?? this.pocketId,
+      description: description ?? this.description,
+      amount: amount ?? this.amount,
+      createdAt: createdAt ?? this.createdAt,
+      type: type ?? this.type,
     );
   }
 
@@ -52,6 +58,7 @@ class Entry implements Entity<Entry> {
       'id_pocket': pocketId,
       'description': description,
       'amount': amount,
+      'created_at': createdAt.toIso8601String(),
       'type': type.name,
     };
   }

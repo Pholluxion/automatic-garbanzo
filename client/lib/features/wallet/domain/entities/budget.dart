@@ -13,13 +13,17 @@ class Budget implements Entity<Budget> {
     required this.createdAt,
   });
 
-  @override
-  Budget copyWith(Map<String, dynamic> data) {
+  Budget copyWith({
+    int? id,
+    String? name,
+    String? description,
+    DateTime? createdAt,
+  }) {
     return Budget(
-      id: data['id'] ?? id,
-      name: data['name'] ?? name,
-      description: data['description'] ?? description,
-      createdAt: data['created_at'] ?? createdAt,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 

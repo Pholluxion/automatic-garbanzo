@@ -1,4 +1,4 @@
-import 'package:client/app/app.dart';
+import 'package:client/app.dart';
 import 'package:client/bootstrap.dart';
 
 void main() {

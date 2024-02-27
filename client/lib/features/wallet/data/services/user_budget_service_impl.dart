@@ -26,7 +26,7 @@ class UserBudgetServiceImpl implements UserBudgetService {
   }
 
   @override
-  Future<UserBudget> update(UserBudget entity) async {
+  Future<bool> update(UserBudget entity) async {
     return await _userBudgetRepository.update(entity);
   }
 }

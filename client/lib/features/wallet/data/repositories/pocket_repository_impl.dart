@@ -69,7 +69,7 @@ class PocketRepositoryImpl implements PocketRepository {
   }
 
   @override
-  Future<Pocket> update(Pocket entity) async {
+  Future<bool> update(Pocket entity) async {
     try {
       final response = await _supabaseClient
           .from(Tables.pocket)
@@ -81,7 +81,7 @@ class PocketRepositoryImpl implements PocketRepository {
             entity.id,
           );
 
-      return PocketModel.fromJson(response.first);
+      return response.isNotEmpty;
     } catch (e) {
       throw Exception(e.toString());
     }

@@ -26,7 +26,7 @@ class BudgetServiceImpl implements BudgetService {
   }
 
   @override
-  Future<Budget> update(Budget entity) async {
+  Future<bool> update(Budget entity) async {
     return _budgetRepository.update(entity);
   }
 }

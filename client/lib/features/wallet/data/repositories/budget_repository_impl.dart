@@ -72,7 +72,7 @@ class BudgetRepositoryImpl extends BudgetRepository {
   }
 
   @override
-  Future<Budget> update(Budget entity) async {
+  Future<bool> update(Budget entity) async {
     try {
       final response = await _supabaseClient
           .from(Tables.budget)
@@ -83,7 +83,7 @@ class BudgetRepositoryImpl extends BudgetRepository {
             'id',
             entity.id,
           );
-      return BudgetModel.fromJson(response.first);
+      return response.isNotEmpty;
     } catch (e) {
       throw Exception(e.toString());
     }

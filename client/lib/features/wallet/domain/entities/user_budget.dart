@@ -11,12 +11,15 @@ class UserBudget implements Entity<UserBudget> {
     required this.idUser,
   });
 
-  @override
-  UserBudget copyWith(Map<String, dynamic> data) {
+  UserBudget copyWith({
+    int? id,
+    int? idBudget,
+    String? idUser,
+  }) {
     return UserBudget(
-      id: data['id'] ?? id,
-      idBudget: data['id_budget'] ?? idBudget,
-      idUser: data['id_user'] ?? idUser,
+      id: id ?? this.id,
+      idBudget: idBudget ?? this.idBudget,
+      idUser: idUser ?? this.idUser,
     );
   }
 

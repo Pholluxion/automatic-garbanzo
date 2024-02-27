@@ -68,7 +68,7 @@ class EntryRepositoryImpl implements EntryRepository {
   }
 
   @override
-  Future<Entry> update(Entry entry) async {
+  Future<bool> update(Entry entry) async {
     try {
       final response = await _supabaseClient
           .from(Tables.entry)
@@ -77,9 +77,9 @@ class EntryRepositoryImpl implements EntryRepository {
             'id',
             entry.id,
           )
-          .select('id');
+          .select();
 
-      return EntryModel.fromJson(response.first);
+      return response.isNotEmpty;
     } catch (e) {
       throw Exception(e.toString());
     }

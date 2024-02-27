@@ -26,7 +26,7 @@ class EntryServiceImpl implements EntryService {
   }
 
   @override
-  Future<Entry> update(Entry entity) async {
+  Future<bool> update(Entry entity) async {
     return await _entryRepository.update(entity);
   }
 

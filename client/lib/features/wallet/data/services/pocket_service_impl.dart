@@ -26,7 +26,7 @@ class PocketServiceImpl implements PocketService {
   }
 
   @override
-  Future<Pocket> update(Pocket entity) async {
+  Future<bool> update(Pocket entity) async {
     return await _pocketRepository.update(entity);
   }
 

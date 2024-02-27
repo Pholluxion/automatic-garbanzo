@@ -40,15 +40,21 @@ class Pocket implements Entity<Pocket> {
     return formatter.format(createdAt);
   }
 
-  @override
-  Pocket copyWith(Map<String, dynamic> data) {
+  Pocket copyWith({
+    int? id,
+    int? idBudget,
+    double? amount,
+    String? name,
+    String? description,
+    DateTime? createdAt,
+  }) {
     return Pocket(
-      id: data['id'] ?? id,
-      idBudget: data['id_budget'] ?? idBudget,
-      amount: data['amount'] ?? amount,
-      name: data['name'] ?? name,
-      description: data['description'] ?? description,
-      createdAt: data['created_at'] ?? createdAt,
+      id: id ?? this.id,
+      idBudget: idBudget ?? this.idBudget,
+      amount: amount ?? this.amount,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 

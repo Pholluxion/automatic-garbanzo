@@ -66,6 +66,24 @@ class ComponentCubit extends Cubit<ComponentState> {
     }
   }
 
+  void createPocket(Pocket pocket) async {
+    try {
+      await _pocketService.create(pocket);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  void createBudget(Budget budget) async {
+    try {
+      await _budgetService.create(budget);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
   List<Component> getAllEntries(int pocketId) {
     List<EntryComponent> entries = [];
 
@@ -111,21 +129,78 @@ class ComponentCubit extends Cubit<ComponentState> {
     }
   }
 
-  void createPocket(Pocket pocket) async {
+  void deletePocket(int id) async {
     try {
-      await _pocketService.create(pocket);
+      await _pocketService.delete(id);
       getComponents();
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
   }
 
-  void createBudget(Budget budget) async {
+  void deleteBudget(int id) async {
     try {
-      await _budgetService.create(budget);
+      await _budgetService.delete(id);
       getComponents();
     } catch (e) {
       emit(ComponentError(e.toString()));
+    }
+  }
+
+  void updateEntry(Entry entry) async {
+    try {
+      await _entryRepository.update(entry);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  void updatePocket(Pocket pocket) async {
+    try {
+      await _pocketService.update(pocket);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  void updateBudget(Budget budget) async {
+    try {
+      await _budgetService.update(budget);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
+  void deleteComponent(Component component) {
+    if (component is EntryComponent) {
+      deleteEntry(component.entry.id);
+    } else if (component is PocketComponent) {
+      deletePocket(component.pocket.id);
+    } else if (component is BudgetComponent) {
+      deleteBudget(component.budget.id);
+    }
+  }
+
+  void createComponent(Component component) {
+    if (component is EntryComponent) {
+      createEntry(component.entry);
+    } else if (component is PocketComponent) {
+      createPocket(component.pocket);
+    } else if (component is BudgetComponent) {
+      createBudget(component.budget);
+    }
+  }
+
+  void updateComponent(Component component) {
+    if (component is EntryComponent) {
+      updateEntry(component.entry);
+    } else if (component is PocketComponent) {
+      updatePocket(component.pocket);
+    } else if (component is BudgetComponent) {
+      updateBudget(component.budget);
     }
   }
 }

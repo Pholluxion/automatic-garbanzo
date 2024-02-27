@@ -19,10 +19,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   /// auth with test user
   ///
-  await (ServiceLocator.instance.get<SupabaseClient>().auth.signInWithPassword(
+  await ServiceLocator.instance.get<SupabaseClient>().auth.signInWithPassword(
         email: Constants.testEmail,
         password: Constants.testPassword,
-      ));
+      );
 
   runApp(await builder());
 }
