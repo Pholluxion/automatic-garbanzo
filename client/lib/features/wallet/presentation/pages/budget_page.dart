@@ -40,6 +40,7 @@ class BudgetPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
+                            direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
                               context.read<ComponentCubit>().deleteBudget(component.budget.id);
                             },

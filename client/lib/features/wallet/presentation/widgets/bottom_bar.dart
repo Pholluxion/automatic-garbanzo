@@ -13,44 +13,47 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomBarCubit, int>(
       builder: (context, state) {
-        return SalomonBottomBar(
-          currentIndex: state,
-          onTap: (index) {
-            context.read<BottomBarCubit>().changeIndex(index);
-          },
-          items: [
-            /// Home
+        return Hero(
+          tag: 'bottom_bar',
+          child: SalomonBottomBar(
+            currentIndex: state,
+            onTap: (index) {
+              context.read<BottomBarCubit>().changeIndex(index);
+            },
+            items: [
+              /// Home
 
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.home),
-              title: const Text('Home'),
-              selectedColor: context.theme.primaryColor,
-            ),
+              SalomonBottomBarItem(
+                icon: const Icon(Icons.home),
+                title: const Text('Home'),
+                selectedColor: context.theme.primaryColor,
+              ),
 
-            /// Wallet
+              /// Wallet
 
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.account_balance_wallet),
-              title: const Text('Wallet'),
-              selectedColor: context.theme.primaryColor,
-            ),
+              SalomonBottomBarItem(
+                icon: const Icon(Icons.account_balance_wallet),
+                title: const Text('Wallet'),
+                selectedColor: context.theme.primaryColor,
+              ),
 
-            /// Settings
+              /// Settings
 
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              selectedColor: context.theme.primaryColor,
-            ),
+              SalomonBottomBarItem(
+                icon: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                selectedColor: context.theme.primaryColor,
+              ),
 
-            /// Profile
+              /// Profile
 
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.person),
-              title: const Text('Profile'),
-              selectedColor: context.theme.primaryColor,
-            ),
-          ],
+              SalomonBottomBarItem(
+                icon: const Icon(Icons.person),
+                title: const Text('Profile'),
+                selectedColor: context.theme.primaryColor,
+              ),
+            ],
+          ),
         );
       },
     );

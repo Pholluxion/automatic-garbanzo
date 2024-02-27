@@ -34,11 +34,13 @@ class EntryDetailPage extends StatelessWidget {
                 TextFormField(
                   initialValue: entryComponent.entry.description,
                   decoration: const InputDecoration(labelText: 'Description'),
+                  keyboardType: TextInputType.text,
                   onChanged: (value) => entry = entry.copyWith(description: value),
                 ),
                 TextFormField(
                   initialValue: entryComponent.entry.amount.toString(),
                   decoration: const InputDecoration(labelText: 'Amount'),
+                  keyboardType: TextInputType.number,
                   onChanged: (value) => entry = entry.copyWith(amount: double.parse(value)),
                 ),
                 DropdownButtonFormField(
@@ -115,6 +117,7 @@ class EntryPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
+                            direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
                               context.read<ComponentCubit>().deleteEntry(component.entry.id);
                             },
@@ -209,6 +212,7 @@ class _EntryFormState extends State<EntryForm> {
             TextFormField(
               controller: _amountController,
               decoration: const InputDecoration(labelText: 'Amount'),
+              keyboardType: TextInputType.number,
             ),
             ValueListenableBuilder(
               valueListenable: _typeController,
