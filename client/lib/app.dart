@@ -45,6 +45,7 @@ class MateApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: state.isDark ? ThemeMode.dark : ThemeMode.light,
           darkTheme: FlexThemeData.dark(scheme: state.scheme).copyWith(
+            dividerTheme: const DividerThemeData(color: Colors.transparent),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(16),
@@ -55,6 +56,7 @@ class MateApp extends StatelessWidget {
             ),
           ),
           theme: FlexThemeData.light(scheme: state.scheme).copyWith(
+            dividerTheme: const DividerThemeData(color: Colors.transparent),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(16),

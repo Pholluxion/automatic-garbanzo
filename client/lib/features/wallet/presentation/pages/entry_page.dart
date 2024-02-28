@@ -112,17 +112,17 @@ class EntryPage extends StatelessWidget {
                   ),
                 SliverToBoxAdapter(
                   child: Card(
-                    elevation: 5,
+                    elevation: 0,
                     color: context.theme.secondaryHeaderColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                     margin: const EdgeInsets.all(16.0),
                     child: Container(
-                      padding: const EdgeInsets.all(48.0),
+                      padding: const EdgeInsets.all(24.0),
                       child: Text(
                         '\$ ${context.read<ComponentCubit>().getFormatTotal(component)}',
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.headlineLarge,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -148,12 +148,15 @@ class EntryPage extends StatelessWidget {
                               child: const Icon(Icons.delete),
                             ),
                             child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               child: ListTile(
                                 title: Text(
                                   context.formatCurrency(
                                     entryComponent.entry.amount.toString(),
                                   ),
-                                  style: context.theme.textTheme.titleLarge,
+                                  style: context.theme.textTheme.titleMedium,
                                 ),
                                 subtitle: Text(entryComponent.entry.description),
                                 leading: CircleAvatar(
@@ -166,6 +169,10 @@ class EntryPage extends StatelessWidget {
                                         : Icons.arrow_downward,
                                     color: context.theme.colorScheme.onPrimary,
                                   ),
+                                ),
+                                trailing: Text(
+                                  entryComponent.entry.dateFormatted,
+                                  style: context.theme.textTheme.titleSmall,
                                 ),
                                 onTap: () => Navigator.push(
                                   context,

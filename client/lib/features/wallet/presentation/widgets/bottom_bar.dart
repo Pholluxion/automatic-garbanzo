@@ -23,17 +23,13 @@ class BottomBar extends StatelessWidget {
               context.read<BottomBarCubit>().changeIndex(index);
               if (index == 0) {
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const BudgetPage(),
-                  ),
+                  _createRoute(const BudgetPage()),
                   (route) => false,
                 );
               } else if (index == 1) {
               } else if (index == 2) {
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const SettingsPage(),
-                  ),
+                  _createRoute(const SettingsPage()),
                   (route) => false,
                 );
               } else if (index == 3) {}
@@ -76,4 +72,22 @@ class BottomBar extends StatelessWidget {
       },
     );
   }
+}
+
+Route _createRoute(Widget page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
