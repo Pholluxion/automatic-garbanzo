@@ -1,1 +1,1 @@
-export 'component/component_cubit.dart';
+export 'component/component.dart';

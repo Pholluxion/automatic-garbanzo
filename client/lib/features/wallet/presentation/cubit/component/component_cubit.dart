@@ -1,6 +1,8 @@
-import 'package:client/features/wallet/domain/domain.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
+
+import 'package:client/features/wallet/domain/domain.dart';
 
 part 'component_state.dart';
 
@@ -9,23 +11,21 @@ class ComponentCubit extends Cubit<ComponentState> {
     this._entryRepository,
     this._pocketService,
     this._budgetService,
-    // this._userBudgetService,
   ) : super(ComponentInitial());
 
   final EntryService _entryRepository;
   final PocketService _pocketService;
   final BudgetService _budgetService;
-  // final UserBudgetService _userBudgetService;
 
   /// Get all entries, pockets and user pockets and implements the composite pattern
 
-  void getComponents() async {
-    emit(ComponentLoading());
+  void getComponents({bool showsimmer = true}) async {
+    if (showsimmer) emit(ComponentLoading());
+
     try {
       final entries = await _entryRepository.getAll();
       final pockets = await _pocketService.getAll();
       final budgets = await _budgetService.getAll();
-      // final userBudgets = await _userBudgetService.getAll();
 
       /// list entries to entry components
       final entryComponents = entries.map((entry) => EntryComponent(entry)).toList();
@@ -43,13 +43,6 @@ class ComponentCubit extends Cubit<ComponentState> {
         final budgetPockets = pocketComponents.where((pocket) => pocket.pocket.idBudget == budget.id).toList();
         return BudgetComponent(budget: budget, componentes: budgetPockets);
       }).toList();
-
-      /// list user budget to  budget components
-
-      // final userBudgetComponents = userBudgets.map((userPocket) {
-      //   final budgets = budgetComponents.where((budget) => budget.budget.id == userPocket.idBudget).toList();
-      //   return UserBudgetComponent(userBudget: userPocket, componentes: budgets);
-      // }).toList();
 
       emit(ComponentLoaded(budgetComponents));
     } catch (e) {
@@ -123,7 +116,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   void deleteEntry(int id) async {
     try {
       await _entryRepository.delete(id);
-      getComponents();
+      getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
@@ -132,7 +125,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   void deletePocket(int id) async {
     try {
       await _pocketService.delete(id);
-      getComponents();
+      getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
@@ -141,7 +134,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   void deleteBudget(int id) async {
     try {
       await _budgetService.delete(id);
-      getComponents();
+      getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
@@ -150,7 +143,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   void updateEntry(Entry entry) async {
     try {
       await _entryRepository.update(entry);
-      getComponents();
+      getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
@@ -159,7 +152,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   void updatePocket(Pocket pocket) async {
     try {
       await _pocketService.update(pocket);
-      getComponents();
+      getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
@@ -168,7 +161,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   void updateBudget(Budget budget) async {
     try {
       await _budgetService.update(budget);
-      getComponents();
+      getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
     }
@@ -202,5 +195,25 @@ class ComponentCubit extends Cubit<ComponentState> {
     } else if (component is BudgetComponent) {
       updateBudget(component.budget);
     }
+  }
+
+  String getFormatTotal(PocketComponent component) {
+    final total = getTotal(component);
+    final simpleCurrency = NumberFormat.decimalPatternDigits(decimalDigits: 0);
+    return simpleCurrency.format(total).replaceAll(',', '.');
+  }
+
+  double getTotal(PocketComponent component) {
+    double total = component.pocket.amount;
+    final entries = getAllEntries(component.pocket.id) as List<EntryComponent>;
+    for (var entry in entries) {
+      if (entry.entry.type.name == 'expense') {
+        total -= entry.entry.amount;
+      } else {
+        total += entry.entry.amount;
+      }
+    }
+
+    return total;
   }
 }

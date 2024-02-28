@@ -14,7 +14,7 @@ class EntryModel extends Entry implements Mappeable<Entry, EntryModel> {
     return EntryModel(
       id: data['id'],
       pocketId: data['id_pocket'],
-      description: data['description'],
+      description: data['description'] ?? '',
       amount: data['amount'],
       createdAt: DateTime.parse(data['created_at']),
       type: EntryType.fromName(data['type']),

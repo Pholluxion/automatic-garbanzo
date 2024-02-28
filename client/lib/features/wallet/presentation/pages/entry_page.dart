@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/features/wallet/domain/domain.dart';
 import 'package:client/features/wallet/presentation/cubit/cubit.dart';
+import 'package:client/features/wallet/presentation/utils/extension.dart';
 import 'package:client/features/wallet/presentation/widgets/widgets.dart';
 
 class EntryDetailPage extends StatelessWidget {
@@ -80,10 +81,10 @@ class EntryDetailPage extends StatelessWidget {
 class EntryPage extends StatelessWidget {
   const EntryPage({
     super.key,
-    required this.pocketId,
+    required this.component,
   });
 
-  final int pocketId;
+  final PocketComponent component;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,7 @@ class EntryPage extends StatelessWidget {
             return const PageShimmer();
           }
 
-          final components = context.read<ComponentCubit>().getAllEntries(pocketId);
+          final components = context.read<ComponentCubit>().getAllEntries(component.pocket.id) as List<EntryComponent>;
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -109,34 +110,66 @@ class EntryPage extends StatelessWidget {
                       child: Text('No entries found'),
                     ),
                   ),
+                SliverToBoxAdapter(
+                  child: Card(
+                    elevation: 5,
+                    color: context.theme.secondaryHeaderColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: const EdgeInsets.all(16.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(48.0),
+                      child: Text(
+                        '\$ ${context.read<ComponentCubit>().getFormatTotal(component)}',
+                        style: Theme.of(context).textTheme.displaySmall,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      for (final component in components as List<EntryComponent>)
+                      for (final entryComponent in components.reversed.toList())
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
-                              context.read<ComponentCubit>().deleteEntry(component.entry.id);
+                              context.read<ComponentCubit>().deleteEntry(entryComponent.entry.id);
                             },
                             background: Container(
-                              color: Colors.red,
+                              color: context.theme.primaryColor,
                               alignment: Alignment.centerRight,
-                              padding: const EdgeInsets.only(right: 16.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: const Icon(Icons.delete),
                             ),
                             child: Card(
                               child: ListTile(
-                                title: Text(component.getName()),
-                                subtitle: Text(component.entry.description),
+                                title: Text(
+                                  context.formatCurrency(
+                                    entryComponent.entry.amount.toString(),
+                                  ),
+                                  style: context.theme.textTheme.titleLarge,
+                                ),
+                                subtitle: Text(entryComponent.entry.description),
                                 leading: CircleAvatar(
-                                  child: Text(component.getName().substring(0, 1)),
+                                  backgroundColor: entryComponent.entry.type == EntryType.income
+                                      ? context.theme.colorScheme.primary
+                                      : context.theme.colorScheme.secondary,
+                                  child: Icon(
+                                    entryComponent.entry.type == EntryType.income
+                                        ? Icons.arrow_upward
+                                        : Icons.arrow_downward,
+                                    color: context.theme.colorScheme.onPrimary,
+                                  ),
                                 ),
                                 onTap: () => Navigator.push(
                                   context,
-                                  _createRoute(component),
+                                  _createRoute(entryComponent),
                                 ),
                               ),
                             ),
@@ -153,9 +186,13 @@ class EntryPage extends StatelessWidget {
       persistentFooterButtons: [
         ElevatedButton(
           onPressed: () {
+            //show full screen bottom sheet
             showModalBottomSheet(
               context: context,
-              builder: (context) => EntryForm(pocketId: pocketId),
+              isScrollControlled: true,
+              builder: (context) {
+                return EntryForm(component: component);
+              },
             );
           },
           child: const Row(
@@ -173,10 +210,10 @@ class EntryPage extends StatelessWidget {
 class EntryForm extends StatefulWidget {
   const EntryForm({
     super.key,
-    required this.pocketId,
+    required this.component,
   });
 
-  final int pocketId;
+  final PocketComponent component;
 
   @override
   State<EntryForm> createState() => _EntryFormState();
@@ -200,61 +237,127 @@ class _EntryFormState extends State<EntryForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
+    return Column(
+      children: [
+        Expanded(
+          child: Form(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // add a switch to change the type of the entry (income/expense)
+                  ListenableBuilder(
+                    listenable: _typeController,
+                    builder: (context, child) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Income'),
+                          Switch.adaptive(
+                            splashRadius: 16,
+                            value: _typeController.value == EntryType.expense,
+                            onChanged: (value) {
+                              _typeController.value = value ? EntryType.expense : EntryType.income;
+                            },
+                          ),
+                          const Text('Expense'),
+                        ],
+                      );
+                    },
+                  ),
+
+                  ListenableBuilder(
+                    listenable: _amountController,
+                    builder: (context, _) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: Text(
+                              '\$ ${context.formatCurrency(_amountController.text.isEmpty ? '0' : _amountController.text)}',
+                              style: Theme.of(context).textTheme.headlineLarge,
+                            ),
+                          ),
+                          ListenableBuilder(
+                            listenable: _typeController,
+                            builder: (context, _) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: Text(
+                                  'Balance: \$ ${getFormatTotal(widget.component)}',
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+
+                  NumericKeyboard(
+                    rightIcon: const Icon(Icons.backspace),
+                    leftIcon: const Icon(Icons.cancel),
+                    onKeyboardTap: (value) {
+                      if (_amountController.text.length >= 7) {
+                        return;
+                      }
+
+                      _amountController.text = _amountController.text + value;
+                    },
+                    leftButtonFn: () {
+                      Navigator.pop(context);
+                    },
+                    rightButtonFn: () {
+                      if (_amountController.text.isEmpty) {
+                        return;
+                      }
+                      _amountController.text = _amountController.text.substring(0, _amountController.text.length - 1);
+                    },
+                  ),
+                ],
+              ),
             ),
-            TextFormField(
-              controller: _amountController,
-              decoration: const InputDecoration(labelText: 'Amount'),
-              keyboardType: TextInputType.number,
-            ),
-            ValueListenableBuilder(
-              valueListenable: _typeController,
-              builder: (context, value, child) {
-                return DropdownButtonFormField(
-                  value: _typeController.value,
-                  items: const [
-                    DropdownMenuItem(
-                      value: EntryType.income,
-                      child: Text('Income'),
-                    ),
-                    DropdownMenuItem(
-                      value: EntryType.expense,
-                      child: Text('Expense'),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    _typeController.value = value as EntryType;
-                  },
-                );
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.read<ComponentCubit>().createEntry(
-                      Entry(
-                        id: 0,
-                        pocketId: widget.pocketId,
-                        description: _descriptionController.text,
-                        amount: double.parse(_amountController.text),
-                        createdAt: DateTime.now(),
-                        type: _typeController.value,
-                      ),
-                    );
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
+          ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () {
+              context.read<ComponentCubit>().createEntry(
+                    Entry(
+                      id: 0,
+                      pocketId: widget.component.pocket.id,
+                      description: _descriptionController.text,
+                      amount: double.parse(_amountController.text),
+                      createdAt: DateTime.now(),
+                      type: _typeController.value,
+                    ),
+                  );
+              Navigator.pop(context);
+            },
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text('Save')],
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  String getFormatTotal(PocketComponent component) {
+    double total = 0;
+    if (_typeController.value == EntryType.income) {
+      total = context.read<ComponentCubit>().getTotal(component) +
+          double.parse(_amountController.text.isEmpty ? '0' : _amountController.text);
+    } else {
+      total = context.read<ComponentCubit>().getTotal(component) -
+          double.parse(_amountController.text.isEmpty ? '0' : _amountController.text);
+    }
+
+    return context.formatCurrency(total.toString());
   }
 }
 

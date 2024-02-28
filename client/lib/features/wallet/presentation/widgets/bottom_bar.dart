@@ -1,3 +1,5 @@
+import 'package:client/features/settings/presentation/presentation.dart';
+import 'package:client/features/wallet/presentation/pages/pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +21,22 @@ class BottomBar extends StatelessWidget {
             currentIndex: state,
             onTap: (index) {
               context.read<BottomBarCubit>().changeIndex(index);
+              if (index == 0) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const BudgetPage(),
+                  ),
+                  (route) => false,
+                );
+              } else if (index == 1) {
+              } else if (index == 2) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsPage(),
+                  ),
+                  (route) => false,
+                );
+              } else if (index == 3) {}
             },
             items: [
               /// Home

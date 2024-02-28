@@ -66,7 +66,7 @@ class PocketPage extends StatelessWidget {
                                 ),
                                 onTap: () => Navigator.push(
                                   context,
-                                  _createRoute(component.pocket.id),
+                                  _createRoute(component),
                                 ),
                               ),
                             ),
@@ -183,9 +183,9 @@ class _PocketFormState extends State<PocketForm> {
   }
 }
 
-Route _createRoute(int pocketId) {
+Route _createRoute(PocketComponent component) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => EntryPage(pocketId: pocketId),
+    pageBuilder: (context, animation, secondaryAnimation) => EntryPage(component: component),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
