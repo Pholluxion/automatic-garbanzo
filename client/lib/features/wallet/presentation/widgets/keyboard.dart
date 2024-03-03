@@ -1,12 +1,10 @@
-library numeric_keyboard;
-
-import 'package:client/features/wallet/presentation/utils/extension.dart';
 import 'package:flutter/material.dart';
+
+import 'package:client/core/utils/extension.dart';
 
 typedef KeyboardTapCallback = void Function(String text);
 
-class NumericKeyboard extends StatefulWidget {
-
+class NumericKeyboard extends StatelessWidget {
   const NumericKeyboard({
     super.key,
     required this.onKeyboardTap,
@@ -18,37 +16,16 @@ class NumericKeyboard extends StatefulWidget {
     this.leftIcon,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
   });
-  /// Color of the text [default = Colors.black]
+
   final TextStyle textStyle;
-
-  /// Display a custom right icon
   final Widget? rightIcon;
-
-  /// Action to trigger when right button is pressed
   final Function()? rightButtonFn;
-
-  /// Action to trigger when right button is long pressed
   final Function()? rightButtonLongPressFn;
-
-  /// Display a custom left icon
   final Widget? leftIcon;
-
-  /// Action to trigger when left button is pressed
   final Function()? leftButtonFn;
-
-  /// Callback when an item is pressed
   final KeyboardTapCallback onKeyboardTap;
-
-  /// Main axis alignment [default = MainAxisAlignment.spaceEvenly]
   final MainAxisAlignment mainAxisAlignment;
 
-  @override
-  State<StatefulWidget> createState() {
-    return _NumericKeyboardState();
-  }
-}
-
-class _NumericKeyboardState extends State<NumericKeyboard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,7 +33,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
       child: Column(
         children: <Widget>[
           ButtonBar(
-            alignment: widget.mainAxisAlignment,
+            alignment: mainAxisAlignment,
             children: <Widget>[
               _calcButton('1'),
               _calcButton('2'),
@@ -64,7 +41,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
             ],
           ),
           ButtonBar(
-            alignment: widget.mainAxisAlignment,
+            alignment: mainAxisAlignment,
             children: <Widget>[
               _calcButton('4'),
               _calcButton('5'),
@@ -72,7 +49,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
             ],
           ),
           ButtonBar(
-            alignment: widget.mainAxisAlignment,
+            alignment: mainAxisAlignment,
             children: <Widget>[
               _calcButton('7'),
               _calcButton('8'),
@@ -80,11 +57,11 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
             ],
           ),
           ButtonBar(
-            alignment: widget.mainAxisAlignment,
+            alignment: mainAxisAlignment,
             children: <Widget>[
               InkWell(
                 borderRadius: BorderRadius.circular(45),
-                onTap: widget.leftButtonFn,
+                onTap: leftButtonFn,
                 child: CircleAvatar(
                   radius: 45,
                   backgroundColor: context.theme.colorScheme.secondary,
@@ -97,8 +74,8 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
               _calcButton('0'),
               InkWell(
                 borderRadius: BorderRadius.circular(45),
-                onTap: widget.rightButtonFn,
-                onLongPress: widget.rightButtonLongPressFn,
+                onTap: rightButtonFn,
+                onLongPress: rightButtonLongPressFn,
                 child: CircleAvatar(
                   radius: 45,
                   backgroundColor: context.theme.colorScheme.secondary,
@@ -118,7 +95,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
   Widget _calcButton(String value) {
     return InkWell(
       borderRadius: BorderRadius.circular(45),
-      onTap: () => widget.onKeyboardTap(value),
+      onTap: () => onKeyboardTap(value),
       child: CircleAvatar(
         radius: 45,
         child: Text(

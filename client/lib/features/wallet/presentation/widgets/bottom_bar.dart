@@ -1,12 +1,11 @@
-import 'package:client/features/settings/presentation/presentation.dart';
-import 'package:client/features/wallet/presentation/pages/pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:client/core/core.dart';
-import 'package:client/features/wallet/presentation/utils/utils.dart';
+import 'package:client/features/settings/presentation/presentation.dart';
+import 'package:client/features/wallet/presentation/pages/pages.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({super.key});
@@ -82,7 +81,8 @@ Route _createRoute(Widget page) {
       const end = Offset.zero;
       const curve = Curves.ease;
 
-      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      final tween =
+          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
       return SlideTransition(
         position: animation.drive(tween),
