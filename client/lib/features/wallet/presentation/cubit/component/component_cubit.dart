@@ -224,6 +224,11 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   ///get total of all pockets
   String getFormatTotalBudget() {
+    if (state is ComponentLoaded &&
+        (state as ComponentLoaded).components.isEmpty) {
+      return '0';
+    }
+
     final total = state is ComponentLoaded
         ? (state as ComponentLoaded)
             .components

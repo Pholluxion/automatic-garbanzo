@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:client/core/utils/extension.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 import 'package:client/features/wallet/presentation/cubit/cubit.dart';
-import 'package:client/core/utils/extension.dart';
 import 'package:client/features/wallet/presentation/widgets/widgets.dart';
 
 class EntryDetailPage extends StatelessWidget {

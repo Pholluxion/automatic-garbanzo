@@ -1,10 +1,10 @@
-import 'package:client/features/wallet/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/features/settings/presentation/presentation.dart';
+import 'package:client/features/wallet/presentation/presentation.dart';
 
 final List<FlexScheme> schemes = [
   FlexScheme.material,

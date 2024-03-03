@@ -1,7 +1,8 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'package:client/core/utils/tables.dart';
 import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BudgetRepositoryImpl extends BudgetRepository {
   BudgetRepositoryImpl(this._supabaseClient);

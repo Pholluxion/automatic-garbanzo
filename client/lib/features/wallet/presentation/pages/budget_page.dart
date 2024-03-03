@@ -24,21 +24,24 @@ class BudgetPage extends StatelessWidget {
                 context.read<ComponentCubit>().getComponents(),
             child: CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(
-                  child: Card(
-                    elevation: 0,
-                    color: context.theme.secondaryHeaderColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    margin: const EdgeInsets.all(16.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Text(
-                        '\$ ${context.read<ComponentCubit>().getFormatTotalBudget()}',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
+                SliverVisibility(
+                  visible: state.components.isNotEmpty,
+                  sliver: SliverToBoxAdapter(
+                    child: Card(
+                      elevation: 0,
+                      color: context.theme.secondaryHeaderColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      margin: const EdgeInsets.all(16.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Text(
+                          '\$ ${context.read<ComponentCubit>().getFormatTotalBudget()}',
+                          style: Theme.of(context).textTheme.headlineLarge,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),
