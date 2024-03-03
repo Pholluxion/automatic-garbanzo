@@ -4,9 +4,8 @@ import 'package:client/features/wallet/domain/domain.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BudgetRepositoryImpl extends BudgetRepository {
-  final SupabaseClient _supabaseClient;
-
   BudgetRepositoryImpl(this._supabaseClient);
+  final SupabaseClient _supabaseClient;
 
   @override
   Future<bool> create(Budget entity) async {

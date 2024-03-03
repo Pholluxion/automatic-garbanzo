@@ -28,19 +28,24 @@ class ComponentCubit extends Cubit<ComponentState> {
       final budgets = await _budgetService.getAll();
 
       /// list entries to entry components
-      final entryComponents = entries.map((entry) => EntryComponent(entry)).toList();
+      final entryComponents =
+          entries.map((entry) => EntryComponent(entry)).toList();
 
       /// list pockets to pocket components
 
       final pocketComponents = pockets.map((pocket) {
-        final pocketEntries = entryComponents.where((entry) => entry.entry.pocketId == pocket.id).toList();
+        final pocketEntries = entryComponents
+            .where((entry) => entry.entry.pocketId == pocket.id)
+            .toList();
         return PocketComponent(pocket: pocket, componentes: pocketEntries);
       }).toList();
 
       /// list budgets to budget components
 
       final budgetComponents = budgets.map((budget) {
-        final budgetPockets = pocketComponents.where((pocket) => pocket.pocket.idBudget == budget.id).toList();
+        final budgetPockets = pocketComponents
+            .where((pocket) => pocket.pocket.idBudget == budget.id)
+            .toList();
         return BudgetComponent(budget: budget, componentes: budgetPockets);
       }).toList();
 
@@ -102,7 +107,8 @@ class ComponentCubit extends Cubit<ComponentState> {
     if (state is ComponentLoaded) {
       final componentLoaded = state as ComponentLoaded;
       final budgetComponent = componentLoaded.components.firstWhere(
-        (element) => element is BudgetComponent && element.budget.id == budgetId,
+        (element) =>
+            element is BudgetComponent && element.budget.id == budgetId,
       );
 
       final budget = budgetComponent as BudgetComponent;
@@ -197,10 +203,9 @@ class ComponentCubit extends Cubit<ComponentState> {
     }
   }
 
-  String getFormatTotal(PocketComponent component) {
+  String getFormatTotalEntry(PocketComponent component) {
     final total = getTotal(component);
-    final simpleCurrency = NumberFormat.decimalPatternDigits(decimalDigits: 0);
-    return simpleCurrency.format(total).replaceAll(',', '.');
+    return getFormatTotal(total);
   }
 
   double getTotal(PocketComponent component) {
@@ -215,5 +220,33 @@ class ComponentCubit extends Cubit<ComponentState> {
     }
 
     return total;
+  }
+
+  ///get total of all pockets
+  String getFormatTotalBudget() {
+    final total = state is ComponentLoaded
+        ? (state as ComponentLoaded)
+            .components
+            .map((e) => getTotalBudget(e))
+            .reduce((value, element) => value + element)
+        : 0;
+    return getFormatTotal(double.parse(total.toString()));
+  }
+
+  double getTotalBudget(Component component) {
+    double total = 0;
+    if (component is! BudgetComponent) return total;
+
+    final pockets = getAllPockets(component.budget.id) as List<PocketComponent>;
+    for (var pocket in pockets) {
+      total += getTotal(pocket);
+    }
+
+    return total;
+  }
+
+  String getFormatTotal(double total) {
+    final simpleCurrency = NumberFormat.decimalPatternDigits(decimalDigits: 0);
+    return simpleCurrency.format(total).replaceAll(',', '.');
   }
 }

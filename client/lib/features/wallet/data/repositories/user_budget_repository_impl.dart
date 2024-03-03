@@ -5,9 +5,9 @@ import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class UserBudgetRepositoryImpl extends UserBudgetRepository {
-  final SupabaseClient _supabaseClient;
 
   UserBudgetRepositoryImpl(this._supabaseClient);
+  final SupabaseClient _supabaseClient;
 
   @override
   Future<bool> create(UserBudget entity) async {

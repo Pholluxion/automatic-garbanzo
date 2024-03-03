@@ -1,9 +1,9 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class EntryComponent implements Component {
-  final Entry entry;
 
   const EntryComponent(this.entry);
+  final Entry entry;
 
   @override
   void add(Component component) {

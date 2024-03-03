@@ -5,9 +5,9 @@ import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class PocketRepositoryImpl implements PocketRepository {
-  final SupabaseClient _supabaseClient;
 
   PocketRepositoryImpl(this._supabaseClient);
+  final SupabaseClient _supabaseClient;
 
   @override
   Future<bool> create(Pocket entity) async {

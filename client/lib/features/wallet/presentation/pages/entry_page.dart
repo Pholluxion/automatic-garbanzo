@@ -36,13 +36,15 @@ class EntryDetailPage extends StatelessWidget {
                   initialValue: entryComponent.entry.description,
                   decoration: const InputDecoration(labelText: 'Description'),
                   keyboardType: TextInputType.text,
-                  onChanged: (value) => entry = entry.copyWith(description: value),
+                  onChanged: (value) =>
+                      entry = entry.copyWith(description: value),
                 ),
                 TextFormField(
                   initialValue: entryComponent.entry.amount.toString(),
                   decoration: const InputDecoration(labelText: 'Amount'),
                   keyboardType: TextInputType.number,
-                  onChanged: (value) => entry = entry.copyWith(amount: double.parse(value)),
+                  onChanged: (value) =>
+                      entry = entry.copyWith(amount: double.parse(value)),
                 ),
                 DropdownButtonFormField(
                   value: entryComponent.entry.type,
@@ -96,7 +98,9 @@ class EntryPage extends StatelessWidget {
             return const PageShimmer();
           }
 
-          final components = context.read<ComponentCubit>().getAllEntries(component.pocket.id) as List<EntryComponent>;
+          final components = context
+              .read<ComponentCubit>()
+              .getAllEntries(component.pocket.id) as List<EntryComponent>;
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -104,12 +108,6 @@ class EntryPage extends StatelessWidget {
             },
             child: CustomScrollView(
               slivers: [
-                if (components.isEmpty)
-                  const SliverFillRemaining(
-                    child: Center(
-                      child: Text('No entries found'),
-                    ),
-                  ),
                 SliverToBoxAdapter(
                   child: Card(
                     elevation: 0,
@@ -121,7 +119,7 @@ class EntryPage extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(24.0),
                       child: Text(
-                        '\$ ${context.read<ComponentCubit>().getFormatTotal(component)}',
+                        '\$ ${context.read<ComponentCubit>().getFormatTotalEntry(component)}',
                         style: Theme.of(context).textTheme.headlineLarge,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -129,17 +127,26 @@ class EntryPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (components.isEmpty)
+                  const SliverFillRemaining(
+                    child: Center(
+                      child: Text('No entries found'),
+                    ),
+                  ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
                       for (final entryComponent in components.reversed.toList())
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
-                              context.read<ComponentCubit>().deleteEntry(entryComponent.entry.id);
+                              context
+                                  .read<ComponentCubit>()
+                                  .deleteEntry(entryComponent.entry.id);
                             },
                             background: Container(
                               color: context.theme.primaryColor,
@@ -158,13 +165,16 @@ class EntryPage extends StatelessWidget {
                                   ),
                                   style: context.theme.textTheme.titleMedium,
                                 ),
-                                subtitle: Text(entryComponent.entry.description),
+                                subtitle:
+                                    Text(entryComponent.entry.description),
                                 leading: CircleAvatar(
-                                  backgroundColor: entryComponent.entry.type == EntryType.income
+                                  backgroundColor: entryComponent.entry.type ==
+                                          EntryType.income
                                       ? context.theme.colorScheme.primary
                                       : context.theme.colorScheme.secondary,
                                   child: Icon(
-                                    entryComponent.entry.type == EntryType.income
+                                    entryComponent.entry.type ==
+                                            EntryType.income
                                         ? Icons.arrow_upward
                                         : Icons.arrow_downward,
                                     color: context.theme.colorScheme.onPrimary,
@@ -244,113 +254,121 @@ class _EntryFormState extends State<EntryForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Form(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // add a switch to change the type of the entry (income/expense)
-                  ListenableBuilder(
-                    listenable: _typeController,
-                    builder: (context, child) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Income'),
-                          Switch.adaptive(
-                            splashRadius: 16,
-                            value: _typeController.value == EntryType.expense,
-                            onChanged: (value) {
-                              _typeController.value = value ? EntryType.expense : EntryType.income;
-                            },
-                          ),
-                          const Text('Expense'),
-                        ],
-                      );
-                    },
-                  ),
-
-                  ListenableBuilder(
-                    listenable: _amountController,
-                    builder: (context, _) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: Text(
-                              '\$ ${context.formatCurrency(_amountController.text.isEmpty ? '0' : _amountController.text)}',
-                              style: Theme.of(context).textTheme.headlineLarge,
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: Form(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // add a switch to change the type of the entry (income/expense)
+                    ListenableBuilder(
+                      listenable: _typeController,
+                      builder: (context, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Income'),
+                            Switch.adaptive(
+                              splashRadius: 16,
+                              activeColor: context.theme.colorScheme.secondary,
+                              inactiveTrackColor:
+                                  context.theme.colorScheme.primary,
+                              value: _typeController.value == EntryType.expense,
+                              onChanged: (value) {
+                                _typeController.value = value
+                                    ? EntryType.expense
+                                    : EntryType.income;
+                              },
                             ),
-                          ),
-                          ListenableBuilder(
-                            listenable: _typeController,
-                            builder: (context, _) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 16.0),
-                                child: Text(
-                                  'Balance: \$ ${getFormatTotal(widget.component)}',
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                            const Text('Expense'),
+                          ],
+                        );
+                      },
+                    ),
 
-                  NumericKeyboard(
-                    rightIcon: const Icon(Icons.backspace),
-                    leftIcon: const Icon(Icons.cancel),
-                    onKeyboardTap: (value) {
-                      if (_amountController.text.length >= 7) {
-                        return;
-                      }
+                    ListenableBuilder(
+                      listenable: _amountController,
+                      builder: (context, _) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: Text(
+                                '\$ ${context.formatCurrency(_amountController.text.isEmpty ? '0' : _amountController.text)}',
+                                style:
+                                    Theme.of(context).textTheme.headlineLarge,
+                              ),
+                            ),
+                            ListenableBuilder(
+                              listenable: _typeController,
+                              builder: (context, _) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: Text(
+                                    'Balance: \$ ${getFormatTotal(widget.component)}',
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
 
-                      _amountController.text = _amountController.text + value;
-                    },
-                    leftButtonFn: () {
-                      Navigator.pop(context);
-                    },
-                    rightButtonFn: () {
-                      if (_amountController.text.isEmpty) {
-                        return;
-                      }
-                      _amountController.text = _amountController.text.substring(0, _amountController.text.length - 1);
-                    },
-                  ),
-                ],
+                    NumericKeyboard(
+                      rightIcon: const Icon(Icons.backspace),
+                      leftIcon: const Icon(Icons.cancel),
+                      onKeyboardTap: (value) {
+                        if (_amountController.text.length >= 7) {
+                          return;
+                        }
+
+                        _amountController.text = _amountController.text + value;
+                      },
+                      leftButtonFn: () => Navigator.pop(context),
+                      rightButtonFn: () {
+                        if (_amountController.text.isEmpty) {
+                          return;
+                        }
+                        _amountController.text = _amountController.text
+                            .substring(0, _amountController.text.length - 1);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              context.read<ComponentCubit>().createEntry(
-                    Entry(
-                      id: 0,
-                      pocketId: widget.component.pocket.id,
-                      description: _descriptionController.text,
-                      amount: double.parse(_amountController.text),
-                      createdAt: DateTime.now(),
-                      type: _typeController.value,
-                    ),
-                  );
-              Navigator.pop(context);
-            },
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('Save')],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<ComponentCubit>().createEntry(
+                      Entry(
+                        id: 0,
+                        pocketId: widget.component.pocket.id,
+                        description: _descriptionController.text,
+                        amount: double.parse(_amountController.text),
+                        createdAt: DateTime.now(),
+                        type: _typeController.value,
+                      ),
+                    );
+                Navigator.pop(context);
+              },
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Save')],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -358,10 +376,12 @@ class _EntryFormState extends State<EntryForm> {
     double total = 0;
     if (_typeController.value == EntryType.income) {
       total = context.read<ComponentCubit>().getTotal(component) +
-          double.parse(_amountController.text.isEmpty ? '0' : _amountController.text);
+          double.parse(
+              _amountController.text.isEmpty ? '0' : _amountController.text);
     } else {
       total = context.read<ComponentCubit>().getTotal(component) -
-          double.parse(_amountController.text.isEmpty ? '0' : _amountController.text);
+          double.parse(
+              _amountController.text.isEmpty ? '0' : _amountController.text);
     }
 
     return context.formatCurrency(total.toString());
@@ -370,13 +390,15 @@ class _EntryFormState extends State<EntryForm> {
 
 Route _createRoute(Component component) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => EntryDetailPage(component: component),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        EntryDetailPage(component: component),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 
-      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      final tween =
+          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
       return SlideTransition(
         position: animation.drive(tween),

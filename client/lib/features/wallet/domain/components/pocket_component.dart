@@ -1,13 +1,13 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class PocketComponent implements Component {
-  final Pocket pocket;
-  final List<Component> _componentes;
 
   const PocketComponent({
     required this.pocket,
     required List<Component> componentes,
   }) : _componentes = componentes;
+  final Pocket pocket;
+  final List<Component> _componentes;
 
   @override
   void add(Component component) {

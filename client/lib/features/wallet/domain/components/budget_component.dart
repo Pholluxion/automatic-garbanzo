@@ -1,13 +1,13 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class BudgetComponent implements Component {
-  final Budget budget;
-  final List<Component> _componentes;
 
   BudgetComponent({
     required this.budget,
     required List<Component> componentes,
   }) : _componentes = componentes;
+  final Budget budget;
+  final List<Component> _componentes;
 
   @override
   void add(Component component) {

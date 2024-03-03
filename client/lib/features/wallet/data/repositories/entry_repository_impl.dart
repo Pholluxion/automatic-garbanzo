@@ -5,9 +5,9 @@ import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class EntryRepositoryImpl implements EntryRepository {
-  final SupabaseClient _supabaseClient;
 
   EntryRepositoryImpl(this._supabaseClient);
+  final SupabaseClient _supabaseClient;
 
   @override
   Future<bool> create(Entry entry) async {

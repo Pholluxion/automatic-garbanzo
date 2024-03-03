@@ -3,12 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class Entry implements Entity<Entry> {
-  final int id;
-  final int pocketId;
-  final String description;
-  final double amount;
-  final DateTime createdAt;
-  final EntryType type;
 
   const Entry({
     this.id = 0,
@@ -18,6 +12,12 @@ class Entry implements Entity<Entry> {
     required this.createdAt,
     required this.type,
   });
+  final int id;
+  final int pocketId;
+  final String description;
+  final double amount;
+  final DateTime createdAt;
+  final EntryType type;
 
   @override
   List<Object?> get props => [id, description, amount, createdAt, type];

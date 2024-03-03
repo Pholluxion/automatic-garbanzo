@@ -1,10 +1,6 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class Budget implements Entity<Budget> {
-  final int id;
-  final String name;
-  final String description;
-  final DateTime createdAt;
 
   Budget({
     required this.id,
@@ -12,6 +8,10 @@ class Budget implements Entity<Budget> {
     required this.description,
     required this.createdAt,
   });
+  final int id;
+  final String name;
+  final String description;
+  final DateTime createdAt;
 
   Budget copyWith({
     int? id,

@@ -1,15 +1,15 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class UserBudget implements Entity<UserBudget> {
-  final int id;
-  final int idBudget;
-  final String idUser;
 
   UserBudget({
     required this.id,
     required this.idBudget,
     required this.idUser,
   });
+  final int id;
+  final int idBudget;
+  final String idUser;
 
   UserBudget copyWith({
     int? id,

@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:client/features/wallet/presentation/widgets/widgets.dart';
 
 class AppScaffold extends StatelessWidget {
-  final String title;
-  final Widget body;
-  final List<Widget>? actions;
-  final List<Widget> persistentFooterButtons;
 
   const AppScaffold({
     super.key,
@@ -15,6 +11,10 @@ class AppScaffold extends StatelessWidget {
     required this.persistentFooterButtons,
     this.actions,
   });
+  final String title;
+  final Widget body;
+  final List<Widget>? actions;
+  final List<Widget> persistentFooterButtons;
 
   @override
   Widget build(BuildContext context) {

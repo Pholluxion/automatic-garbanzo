@@ -1,9 +1,9 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class EntryServiceImpl implements EntryService {
-  final EntryRepository _entryRepository;
 
   EntryServiceImpl(this._entryRepository);
+  final EntryRepository _entryRepository;
 
   @override
   Future<bool> create(Entry entity) async {

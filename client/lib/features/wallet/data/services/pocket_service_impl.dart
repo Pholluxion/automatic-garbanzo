@@ -1,9 +1,9 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class PocketServiceImpl implements PocketService {
-  final PocketRepository _pocketRepository;
 
   PocketServiceImpl(this._pocketRepository);
+  final PocketRepository _pocketRepository;
 
   @override
   Future<bool> create(Pocket entity) async {

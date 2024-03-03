@@ -6,6 +6,18 @@ import 'package:flutter/material.dart';
 typedef KeyboardTapCallback = void Function(String text);
 
 class NumericKeyboard extends StatefulWidget {
+
+  const NumericKeyboard({
+    super.key,
+    required this.onKeyboardTap,
+    this.textStyle = const TextStyle(color: Colors.black),
+    this.rightButtonFn,
+    this.rightButtonLongPressFn,
+    this.rightIcon,
+    this.leftButtonFn,
+    this.leftIcon,
+    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+  });
   /// Color of the text [default = Colors.black]
   final TextStyle textStyle;
 
@@ -29,18 +41,6 @@ class NumericKeyboard extends StatefulWidget {
 
   /// Main axis alignment [default = MainAxisAlignment.spaceEvenly]
   final MainAxisAlignment mainAxisAlignment;
-
-  const NumericKeyboard({
-    super.key,
-    required this.onKeyboardTap,
-    this.textStyle = const TextStyle(color: Colors.black),
-    this.rightButtonFn,
-    this.rightButtonLongPressFn,
-    this.rightIcon,
-    this.leftButtonFn,
-    this.leftIcon,
-    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
-  });
 
   @override
   State<StatefulWidget> createState() {
@@ -89,7 +89,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                   radius: 45,
                   backgroundColor: context.theme.colorScheme.secondary,
                   child: const Icon(
-                    Icons.cancel,
+                    Icons.arrow_back_ios_new_rounded,
                     color: Colors.white,
                   ),
                 ),

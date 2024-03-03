@@ -1,9 +1,9 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class UserBudgetServiceImpl implements UserBudgetService {
-  final UserBudgetRepository _userBudgetRepository;
 
   UserBudgetServiceImpl(this._userBudgetRepository);
+  final UserBudgetRepository _userBudgetRepository;
 
   @override
   Future<bool> create(UserBudget entity) async {

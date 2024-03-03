@@ -1,9 +1,9 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class BudgetServiceImpl implements BudgetService {
-  final BudgetRepository _budgetRepository;
 
   BudgetServiceImpl(this._budgetRepository);
+  final BudgetRepository _budgetRepository;
 
   @override
   Future<bool> create(Budget entity) async {
