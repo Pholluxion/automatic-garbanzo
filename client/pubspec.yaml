@@ -45,8 +45,8 @@ dependencies:
   path_provider: ^2.1.2
   random_string: ^2.3.1
   salomon_bottom_bar: ^3.3.2
-  shared_preferences: ^2.2.2
   shimmer: ^3.0.0
+  supabase_auth_ui: ^0.4.3
   supabase_flutter: ^2.1.0
 
 dev_dependencies:

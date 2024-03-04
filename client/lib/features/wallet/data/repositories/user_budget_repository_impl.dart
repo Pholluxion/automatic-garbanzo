@@ -12,7 +12,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
   Future<bool> create(UserBudget entity) async {
     try {
       final response = await _supabaseClient
-          .from(Tables.userPocket)
+          .from(Tables.userBudget)
           .upsert(
             entity.toJson(),
           )
@@ -26,7 +26,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
   @override
   Future<bool> delete(int id) async {
     try {
-      await _supabaseClient.from(Tables.userPocket).delete().eq(
+      await _supabaseClient.from(Tables.userBudget).delete().eq(
             'id',
             id,
           );
@@ -43,7 +43,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
       final userId = _supabaseClient.auth.currentUser?.id ?? '';
       final response = await _supabaseClient
           .from(
-            Tables.userPocket,
+            Tables.userBudget,
           )
           .select()
           .eq(
@@ -61,7 +61,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
   Future<UserBudget> getById(int id) async {
     try {
       final response = await _supabaseClient
-          .from(Tables.userPocket)
+          .from(Tables.userBudget)
           .select()
           .eq(
             'id',
@@ -79,7 +79,7 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
   Future<bool> update(UserBudget entity) async {
     try {
       final response = await _supabaseClient
-          .from(Tables.userPocket)
+          .from(Tables.userBudget)
           .upsert(
             entity.toJson(),
           )

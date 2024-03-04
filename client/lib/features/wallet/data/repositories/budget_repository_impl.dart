@@ -40,11 +40,14 @@ class BudgetRepositoryImpl extends BudgetRepository {
   @override
   Future<List<Budget>> getAll() async {
     try {
+      //TODO: Implement user id
+      final userId = _supabaseClient.auth.currentUser?.id ?? '';
       final response = await _supabaseClient
           .from(
             Tables.budget,
           )
-          .select();
+          .select('*, user_budget(id_user)')
+          .filter('user_budget.id_user', 'eq', userId);
 
       return response.map((e) => BudgetModel.fromJson(e)).toList();
     } catch (e) {

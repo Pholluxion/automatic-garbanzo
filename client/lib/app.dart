@@ -1,3 +1,4 @@
+import 'package:client/features/auth/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -48,7 +49,7 @@ class MateApp extends StatelessWidget {
           themeMode: state.isDark ? ThemeMode.dark : ThemeMode.light,
           darkTheme: FlexThemeData.dark(scheme: state.scheme).getData,
           theme: FlexThemeData.light(scheme: state.scheme).getData,
-          home: const BudgetPage(),
+          home: const LoginPage(),
         );
       },
     );
