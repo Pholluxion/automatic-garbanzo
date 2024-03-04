@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/core/core.dart';
@@ -12,7 +13,7 @@ class BudgetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Budgets',
+      title: 'budget.title_plural'.tr(),
       body: BlocBuilder<ComponentCubit, ComponentState>(
         builder: (context, state) {
           if (state is! ComponentLoaded) {
@@ -47,9 +48,9 @@ class BudgetPage extends StatelessWidget {
                   ),
                 ),
                 if (state.components.isEmpty)
-                  const SliverFillRemaining(
+                  SliverFillRemaining(
                     child: Center(
-                      child: Text('No budgets found.'),
+                      child: const Text('budget.not_found').tr(),
                     ),
                   ),
                 SliverList(
@@ -120,10 +121,10 @@ class BudgetPage extends StatelessWidget {
               builder: (context) => const BudgetForm(),
             );
           },
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Add Budget'),
+              Text('budget.create'.tr()),
             ],
           ),
         ),
@@ -182,9 +183,9 @@ class _BudgetFormState extends State<BudgetForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Text(
-                'Create a new budget',
-                style: TextStyle(
+              Text(
+                'budget.create'.tr(),
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -193,16 +194,16 @@ class _BudgetFormState extends State<BudgetForm> {
               TextFormField(
                 controller: _nameController,
                 textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  hintText: 'Name',
+                decoration: InputDecoration(
+                  hintText: 'common.name'.tr(),
                 ),
                 maxLength: 20,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  hintText: 'Description',
+                decoration: InputDecoration(
+                  hintText: 'common.description'.tr(),
                 ),
                 maxLines: 5,
                 maxLength: 100,
@@ -223,17 +224,17 @@ class _BudgetFormState extends State<BudgetForm> {
                           );
                       Navigator.pop(context);
                     },
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('Save')],
+                      children: [Text('common.save'.tr())],
                     ),
                   ),
                   const SizedBox(height: 16),
                   OutlinedButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('Vinculate Budget')],
+                      children: [Text('budget.vinculate'.tr())],
                     ),
                   ),
                 ],
@@ -257,7 +258,7 @@ class BudgetDetailPage extends StatelessWidget {
     final budgetComponent = component as BudgetComponent;
     Budget budget = budgetComponent.budget;
     return AppScaffold(
-      title: component.getName(),
+      title: 'budget.edit'.tr(),
       body: BlocBuilder<ComponentCubit, ComponentState>(
         builder: (context, state) {
           if (state is! ComponentLoaded) {
@@ -270,18 +271,11 @@ class BudgetDetailPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Text(
-                      'Edit budget',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: budgetComponent.budget.name,
-                      decoration: const InputDecoration(
-                        hintText: 'Name',
+                      decoration: InputDecoration(
+                        hintText: 'common.name'.tr(),
                       ),
                       maxLength: 20,
                       textAlign: TextAlign.center,
@@ -292,8 +286,8 @@ class BudgetDetailPage extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: budgetComponent.budget.description,
-                      decoration: const InputDecoration(
-                        hintText: 'Description',
+                      decoration: InputDecoration(
+                        hintText: 'common.description'.tr(),
                       ),
                       maxLines: 5,
                       maxLength: 100,
@@ -318,17 +312,17 @@ class BudgetDetailPage extends StatelessWidget {
                 context.read<ComponentCubit>().updateBudget(budget);
                 Navigator.pop(context);
               },
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Save')],
+                children: [const Text('common.save').tr()],
               ),
             ),
             const SizedBox(height: 16),
             OutlinedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Cancel')],
+                children: [const Text('common.cancel').tr()],
               ),
             ),
           ],

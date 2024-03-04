@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/core/core.dart';
@@ -17,7 +18,7 @@ class PocketPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Pockets',
+      title: 'pocket.title_plural'.tr(),
       body: BlocBuilder<ComponentCubit, ComponentState>(
         builder: (context, state) {
           if (state is! ComponentLoaded) {
@@ -53,9 +54,9 @@ class PocketPage extends StatelessWidget {
                   ),
                 ),
                 if (components.isEmpty)
-                  const SliverFillRemaining(
+                  SliverFillRemaining(
                     child: Center(
-                      child: Text('No pockets found.'),
+                      child: const Text('pocket.not_found').tr(),
                     ),
                   ),
                 SliverList(
@@ -130,10 +131,10 @@ class PocketPage extends StatelessWidget {
               },
             );
           },
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Add Pocket'),
+              const Text('pocket.create').tr(),
             ],
           ),
         ),
@@ -178,9 +179,9 @@ class _PocketFormState extends State<PocketForm> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Text(
-                'Add Pocket',
-                style: TextStyle(
+              Text(
+                'pocket.create'.tr(),
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -189,16 +190,16 @@ class _PocketFormState extends State<PocketForm> {
               TextFormField(
                 controller: _nameController,
                 textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  hintText: 'Name',
+                decoration: InputDecoration(
+                  hintText: 'common.name'.tr(),
                 ),
                 maxLength: 20,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _amountController,
-                decoration: const InputDecoration(
-                  hintText: 'Amount',
+                decoration: InputDecoration(
+                  hintText: 'common.amount'.tr(),
                 ),
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
@@ -207,8 +208,8 @@ class _PocketFormState extends State<PocketForm> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  hintText: 'Description',
+                decoration: InputDecoration(
+                  hintText: 'common.description'.tr(),
                 ),
                 maxLines: 5,
                 maxLength: 100,
@@ -229,9 +230,9 @@ class _PocketFormState extends State<PocketForm> {
                       );
                   Navigator.pop(context);
                 },
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text('Save')],
+                  children: [const Text('common.save').tr()],
                 ),
               ),
               const SizedBox(height: 16),
@@ -276,7 +277,7 @@ class PocketDetailPage extends StatelessWidget {
     final pocketComponent = component as PocketComponent;
     Pocket pocket = pocketComponent.pocket;
     return AppScaffold(
-      title: component.getName(),
+      title: 'pocket.edit'.tr(),
       body: BlocBuilder<ComponentCubit, ComponentState>(
         builder: (context, state) {
           if (state is! ComponentLoaded) {
@@ -289,18 +290,11 @@ class PocketDetailPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Text(
-                      'Edit pocket',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: pocketComponent.pocket.name,
-                      decoration: const InputDecoration(
-                        hintText: 'Name',
+                      decoration: InputDecoration(
+                        hintText: 'common.name'.tr(),
                       ),
                       maxLength: 20,
                       textAlign: TextAlign.center,
@@ -311,8 +305,8 @@ class PocketDetailPage extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: pocketComponent.pocket.amount.toString(),
-                      decoration: const InputDecoration(
-                        hintText: 'Amount',
+                      decoration: InputDecoration(
+                        hintText: 'common.amount'.tr(),
                       ),
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
@@ -323,8 +317,8 @@ class PocketDetailPage extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: pocketComponent.pocket.description,
-                      decoration: const InputDecoration(
-                        hintText: 'Description',
+                      decoration: InputDecoration(
+                        hintText: 'common.description'.tr(),
                       ),
                       maxLines: 5,
                       maxLength: 100,
@@ -349,17 +343,17 @@ class PocketDetailPage extends StatelessWidget {
                 context.read<ComponentCubit>().updatePocket(pocket);
                 Navigator.pop(context);
               },
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Save')],
+                children: [const Text('common.save').tr()],
               ),
             ),
             const SizedBox(height: 16),
             OutlinedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Cancel')],
+                children: [const Text('common.cancel').tr()],
               ),
             ),
           ],

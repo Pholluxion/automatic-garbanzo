@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -37,7 +38,7 @@ class BottomBar extends StatelessWidget {
 
               SalomonBottomBarItem(
                 icon: const Icon(Icons.home),
-                title: const Text('Home'),
+                title: const Text('home.title').tr(),
                 selectedColor: context.theme.primaryColor,
               ),
 
@@ -45,7 +46,7 @@ class BottomBar extends StatelessWidget {
 
               SalomonBottomBarItem(
                 icon: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                title: const Text('settings.title').tr(),
                 selectedColor: context.theme.primaryColor,
               ),
 
@@ -53,7 +54,7 @@ class BottomBar extends StatelessWidget {
 
               SalomonBottomBarItem(
                 icon: const Icon(Icons.person),
-                title: const Text('Profile'),
+                title: const Text('account.title').tr(),
                 selectedColor: context.theme.primaryColor,
               ),
             ],

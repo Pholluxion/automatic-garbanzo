@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -67,12 +68,14 @@ class ThemePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Theme',
+      title: 'settings.theme.title'.tr(),
       actions: [
         BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {
             return IconButton(
-              icon: !state.isDark ? const Icon(Icons.brightness_4) : const Icon(Icons.brightness_7),
+              icon: !state.isDark
+                  ? const Icon(Icons.brightness_4)
+                  : const Icon(Icons.brightness_7),
               onPressed: () {
                 context.read<ThemeCubit>().changeTheme(isDark: !state.isDark);
               },

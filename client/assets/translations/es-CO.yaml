@@ -1,0 +1,54 @@
+budget:
+    title: Presupuesto
+    title_plural: Presupuestos
+    not_found: No se encontraron presupuestos
+    create: Crear un nuevo presupuesto
+    edit: Editar presupuesto
+    vinculate: Vincular presupuesto
+
+pocket:
+    title: Bolsillo
+    title_plural: Bolsillos
+    not_found: No se encontraron bolsillos
+    create: Crear un nuevo bolsillo
+    edit: Editar bolsillo
+
+entry:
+    title: Entrada
+    title_plural: Entradas
+    not_found: No se encontraron entradas
+    create: Crear una nueva entrada
+    edit: Editar entrada
+    income: Ingreso
+    expense: Gasto
+
+common:
+    balance: Saldo
+    name: Nombre
+    description: Descripción
+    amount: Monto
+    date: Fecha
+    category: Categoría
+    save: Guardar
+    cancel: Cancelar
+    delete: Eliminar
+    confirm: Confirmar
+    close: Cerrar
+
+settings:
+    title: Configuración
+    language:
+        title: Idioma
+        en: Inglés
+        es: Español
+    theme:
+        title: Tema
+        mode: Modo
+    light: Claro
+    dark: Oscuro
+
+home:
+    title: Inicio
+
+account:
+    title: Cuenta

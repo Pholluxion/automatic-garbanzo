@@ -1,0 +1,54 @@
+budget:
+    title: Budget
+    title_plural: Budgets
+    not_found: No budgets found
+    create: Create a new budget
+    edit: Edit budget
+    vinculate: Vinculate budget
+
+pocket:
+    title: Pocket
+    title_plural: Pockets
+    not_found: No pockets found
+    create: Create a new pocket
+    edit: Edit pocket
+
+entry:
+    title: Entry
+    title_plural: Entries
+    not_found: No entries found
+    create: Create a new entry
+    edit: Edit entry
+    income: Income
+    expense: Expense
+
+common:
+    balance: Balance
+    name: Name
+    description: Description
+    amount: Amount
+    date: Date
+    category: Category
+    save: Save
+    cancel: Cancel
+    delete: Delete
+    confirm: Confirm
+    close: Close
+
+settings:
+    title: Configuration
+    language:
+        title: Language
+        en: English
+        es: Spanish
+    theme:
+        title: Theme
+        mode: Mode
+        light: Light
+        dark: Dark
+
+home:
+    title: Home
+
+account:
+    title: Account

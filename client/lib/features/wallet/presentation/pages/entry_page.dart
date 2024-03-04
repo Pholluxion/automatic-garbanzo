@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/core/utils/extension.dart';
@@ -22,7 +21,7 @@ class EntryDetailPage extends StatelessWidget {
     final entryComponent = component as EntryComponent;
     Entry entry = entryComponent.entry.copyWith();
     return AppScaffold(
-      title: component.getName(),
+      title: 'entry.edit'.tr(),
       body: BlocBuilder<ComponentCubit, ComponentState>(
         builder: (context, state) {
           if (state is! ComponentLoaded) {
@@ -35,18 +34,11 @@ class EntryDetailPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Text(
-                      'Edit Entry',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: entryComponent.entry.amount.toString(),
-                      decoration: const InputDecoration(
-                        hintText: 'Amount',
+                      decoration: InputDecoration(
+                        hintText: 'common.amount'.tr(),
                       ),
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
@@ -57,8 +49,8 @@ class EntryDetailPage extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     TextFormField(
                       initialValue: entryComponent.entry.description,
-                      decoration: const InputDecoration(
-                        hintText: 'Description',
+                      decoration: InputDecoration(
+                        hintText: 'common.description'.tr(),
                       ),
                       maxLines: 5,
                       maxLength: 100,
@@ -71,14 +63,14 @@ class EntryDetailPage extends StatelessWidget {
                     DropdownButtonFormField(
                       isExpanded: true,
                       value: entryComponent.entry.type,
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                           value: EntryType.income,
-                          child: Text('Income'),
+                          child: Text('entry.income'.tr()),
                         ),
                         DropdownMenuItem(
                           value: EntryType.expense,
-                          child: Text('Expense'),
+                          child: Text('entry.expense'.tr()),
                         ),
                       ],
                       onChanged: (value) {
@@ -97,21 +89,20 @@ class EntryDetailPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                log('entry: ${entry.toJson()}');
                 context.read<ComponentCubit>().updateEntry(entry);
                 Navigator.pop(context);
               },
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Save')],
+                children: [Text('common.save'.tr())],
               ),
             ),
             const SizedBox(height: 16),
             OutlinedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Cancel')],
+                children: [Text('common.cancel'.tr())],
               ),
             ),
           ],
@@ -132,7 +123,7 @@ class EntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Entries',
+      title: 'entry.title_plural'.tr(),
       body: BlocBuilder<ComponentCubit, ComponentState>(
         builder: (context, state) {
           if (state is! ComponentLoaded) {
@@ -169,9 +160,9 @@ class EntryPage extends StatelessWidget {
                   ),
                 ),
                 if (components.isEmpty)
-                  const SliverFillRemaining(
+                  SliverFillRemaining(
                     child: Center(
-                      child: Text('No entries found'),
+                      child: const Text('entry.not_found').tr(),
                     ),
                   ),
                 SliverList(
@@ -253,10 +244,10 @@ class EntryPage extends StatelessWidget {
               },
             );
           },
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Add Entry'),
+              const Text('entry.create').tr(),
             ],
           ),
         ),
@@ -308,14 +299,14 @@ class _EntryFormState extends State<EntryForm> {
                     DropdownButtonFormField(
                       isExpanded: true,
                       value: _typeController.value,
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                           value: EntryType.income,
-                          child: Text('Income'),
+                          child: Text('entry.income'.tr()),
                         ),
                         DropdownMenuItem(
                           value: EntryType.expense,
-                          child: Text('Expense'),
+                          child: Text('entry.expense'.tr()),
                         ),
                       ],
                       onChanged: (value) {
@@ -341,7 +332,7 @@ class _EntryFormState extends State<EntryForm> {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 16.0),
                                   child: Text(
-                                    'Balance: \$ ${getFormatTotal(widget.component)}',
+                                    '${'common.balance'.tr()}: \$ ${getFormatTotal(widget.component)}',
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
@@ -392,9 +383,9 @@ class _EntryFormState extends State<EntryForm> {
                     );
                 Navigator.pop(context);
               },
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Save')],
+                children: [Text('common.save'.tr())],
               ),
             ),
           ),
