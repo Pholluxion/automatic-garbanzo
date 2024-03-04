@@ -5,7 +5,6 @@ import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class UserBudgetRepositoryImpl extends UserBudgetRepository {
-
   UserBudgetRepositoryImpl(this._supabaseClient);
   final SupabaseClient _supabaseClient;
 

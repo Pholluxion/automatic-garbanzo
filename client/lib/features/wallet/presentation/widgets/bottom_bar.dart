@@ -26,7 +26,6 @@ class BottomBar extends StatelessWidget {
                   (route) => false,
                 );
               } else if (index == 1) {
-              } else if (index == 2) {
                 Navigator.of(context).pushAndRemoveUntil(
                   _createRoute(const SettingsPage()),
                   (route) => false,
@@ -39,14 +38,6 @@ class BottomBar extends StatelessWidget {
               SalomonBottomBarItem(
                 icon: const Icon(Icons.home),
                 title: const Text('Home'),
-                selectedColor: context.theme.primaryColor,
-              ),
-
-              /// Wallet
-
-              SalomonBottomBarItem(
-                icon: const Icon(Icons.account_balance_wallet),
-                title: const Text('Wallet'),
                 selectedColor: context.theme.primaryColor,
               ),
 

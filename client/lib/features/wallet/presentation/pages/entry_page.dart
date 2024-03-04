@@ -30,52 +30,93 @@ class EntryDetailPage extends StatelessWidget {
           }
 
           return Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  initialValue: entryComponent.entry.description,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) =>
-                      entry = entry.copyWith(description: value),
-                ),
-                TextFormField(
-                  initialValue: entryComponent.entry.amount.toString(),
-                  decoration: const InputDecoration(labelText: 'Amount'),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) =>
-                      entry = entry.copyWith(amount: double.parse(value)),
-                ),
-                DropdownButtonFormField(
-                  value: entryComponent.entry.type,
-                  items: const [
-                    DropdownMenuItem(
-                      value: EntryType.income,
-                      child: Text('Income'),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Text(
+                      'Edit Entry',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    DropdownMenuItem(
-                      value: EntryType.expense,
-                      child: Text('Expense'),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      initialValue: entryComponent.entry.amount.toString(),
+                      decoration: const InputDecoration(
+                        hintText: 'Amount',
+                      ),
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      maxLength: 10,
+                      onChanged: (value) =>
+                          entry = entry.copyWith(amount: double.parse(value)),
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      initialValue: entryComponent.entry.description,
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                      ),
+                      maxLines: 5,
+                      maxLength: 100,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      onChanged: (value) =>
+                          entry = entry.copyWith(description: value),
+                    ),
+                    const SizedBox(height: 16.0),
+                    DropdownButtonFormField(
+                      isExpanded: true,
+                      value: entryComponent.entry.type,
+                      items: const [
+                        DropdownMenuItem(
+                          value: EntryType.income,
+                          child: Text('Income'),
+                        ),
+                        DropdownMenuItem(
+                          value: EntryType.expense,
+                          child: Text('Expense'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        entry = entry.copyWith(type: value as EntryType);
+                      },
                     ),
                   ],
-                  onChanged: (value) {
-                    entry = entry.copyWith(type: value as EntryType);
-                  },
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    log('entry: ${entry.toJson()}');
-                    context.read<ComponentCubit>().updateEntry(entry);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Save'),
-                ),
-              ],
+              ),
             ),
           );
         },
       ),
-      persistentFooterButtons: const [],
+      persistentFooterButtons: [
+        Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                log('entry: ${entry.toJson()}');
+                context.read<ComponentCubit>().updateEntry(entry);
+                Navigator.pop(context);
+              },
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Save')],
+              ),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Cancel')],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -264,32 +305,23 @@ class _EntryFormState extends State<EntryForm> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // add a switch to change the type of the entry (income/expense)
-                    ListenableBuilder(
-                      listenable: _typeController,
-                      builder: (context, child) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('Income'),
-                            Switch.adaptive(
-                              splashRadius: 16,
-                              activeColor: context.theme.colorScheme.secondary,
-                              inactiveTrackColor:
-                                  context.theme.colorScheme.primary,
-                              value: _typeController.value == EntryType.expense,
-                              onChanged: (value) {
-                                _typeController.value = value
-                                    ? EntryType.expense
-                                    : EntryType.income;
-                              },
-                            ),
-                            const Text('Expense'),
-                          ],
-                        );
+                    DropdownButtonFormField(
+                      isExpanded: true,
+                      value: _typeController.value,
+                      items: const [
+                        DropdownMenuItem(
+                          value: EntryType.income,
+                          child: Text('Income'),
+                        ),
+                        DropdownMenuItem(
+                          value: EntryType.expense,
+                          child: Text('Expense'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        _typeController.value = value as EntryType;
                       },
                     ),
-
                     ListenableBuilder(
                       listenable: _amountController,
                       builder: (context, _) {
@@ -320,7 +352,6 @@ class _EntryFormState extends State<EntryForm> {
                         );
                       },
                     ),
-
                     NumericKeyboard(
                       rightIcon: const Icon(Icons.backspace),
                       leftIcon: const Icon(Icons.cancel),

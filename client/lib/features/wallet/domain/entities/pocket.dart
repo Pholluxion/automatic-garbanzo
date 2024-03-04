@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class Pocket implements Entity<Pocket> {
-
   const Pocket({
     required this.id,
     required this.idBudget,

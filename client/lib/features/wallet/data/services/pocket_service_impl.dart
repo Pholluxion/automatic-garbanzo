@@ -1,7 +1,6 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class PocketServiceImpl implements PocketService {
-
   PocketServiceImpl(this._pocketRepository);
   final PocketRepository _pocketRepository;
 

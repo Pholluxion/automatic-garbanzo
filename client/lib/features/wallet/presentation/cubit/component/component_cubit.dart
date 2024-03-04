@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
@@ -121,7 +123,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   void deleteEntry(int id) async {
     try {
-      await _entryRepository.delete(id);
+      unawaited(_entryRepository.delete(id));
       getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
@@ -130,7 +132,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   void deletePocket(int id) async {
     try {
-      await _pocketService.delete(id);
+      unawaited(_pocketService.delete(id));
       getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
@@ -139,7 +141,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   void deleteBudget(int id) async {
     try {
-      await _budgetService.delete(id);
+      unawaited(_budgetService.delete(id));
       getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
@@ -148,7 +150,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   void updateEntry(Entry entry) async {
     try {
-      await _entryRepository.update(entry);
+      unawaited(_entryRepository.update(entry));
       getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
@@ -157,7 +159,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   void updatePocket(Pocket pocket) async {
     try {
-      await _pocketService.update(pocket);
+      unawaited(_pocketService.update(pocket));
       getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
@@ -166,40 +168,10 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   void updateBudget(Budget budget) async {
     try {
-      await _budgetService.update(budget);
+      unawaited(_budgetService.update(budget));
       getComponents(showsimmer: false);
     } catch (e) {
       emit(ComponentError(e.toString()));
-    }
-  }
-
-  void deleteComponent(Component component) {
-    if (component is EntryComponent) {
-      deleteEntry(component.entry.id);
-    } else if (component is PocketComponent) {
-      deletePocket(component.pocket.id);
-    } else if (component is BudgetComponent) {
-      deleteBudget(component.budget.id);
-    }
-  }
-
-  void createComponent(Component component) {
-    if (component is EntryComponent) {
-      createEntry(component.entry);
-    } else if (component is PocketComponent) {
-      createPocket(component.pocket);
-    } else if (component is BudgetComponent) {
-      createBudget(component.budget);
-    }
-  }
-
-  void updateComponent(Component component) {
-    if (component is EntryComponent) {
-      updateEntry(component.entry);
-    } else if (component is PocketComponent) {
-      updatePocket(component.pocket);
-    } else if (component is BudgetComponent) {
-      updateBudget(component.budget);
     }
   }
 

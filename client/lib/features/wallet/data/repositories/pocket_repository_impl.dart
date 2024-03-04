@@ -5,7 +5,6 @@ import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class PocketRepositoryImpl implements PocketRepository {
-
   PocketRepositoryImpl(this._supabaseClient);
   final SupabaseClient _supabaseClient;
 
@@ -57,10 +56,7 @@ class PocketRepositoryImpl implements PocketRepository {
             Tables.pocket,
           )
           .select()
-          .eq(
-            'id',
-            id,
-          );
+          .eq('id', id);
 
       return PocketModel.fromJson(response.first);
     } catch (e) {
@@ -73,13 +69,9 @@ class PocketRepositoryImpl implements PocketRepository {
     try {
       final response = await _supabaseClient
           .from(Tables.pocket)
-          .update(
-            entity.toJson(),
-          )
-          .eq(
-            'id',
-            entity.id,
-          );
+          .update(entity.toJson())
+          .eq('id', entity.id)
+          .select();
 
       return response.isNotEmpty;
     } catch (e) {

@@ -76,13 +76,9 @@ class BudgetRepositoryImpl extends BudgetRepository {
     try {
       final response = await _supabaseClient
           .from(Tables.budget)
-          .update(
-            entity.toJson(),
-          )
-          .eq(
-            'id',
-            entity.id,
-          );
+          .update(entity.toJson())
+          .eq('id', entity.id)
+          .select();
       return response.isNotEmpty;
     } catch (e) {
       throw Exception(e.toString());

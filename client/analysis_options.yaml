@@ -32,7 +32,7 @@ linter:
     sort_constructors_first: true  # Uncomment to enable the `sort_constructors_first` rule
     sort_unnamed_constructors_first: true  # Uncomment to enable the `sort_unnamed_constructors_first` rule
     sort_pub_dependencies: true  # Uncomment to enable the `sort_pub_dependencies` rule
-
+    unawaited_futures: true  # Uncomment to enable the `unawaited_futures` rule
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

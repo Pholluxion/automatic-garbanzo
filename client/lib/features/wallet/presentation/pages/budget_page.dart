@@ -72,18 +72,33 @@ class BudgetPage extends StatelessWidget {
                               padding: const EdgeInsets.only(right: 16.0),
                               child: const Icon(Icons.delete),
                             ),
-                            child: Card(
-                              child: ListTile(
-                                title: Text(component.getName()),
-                                subtitle: Text(component.budget.description),
-                                leading: const CircleAvatar(
-                                  child: Icon(
-                                    Icons.wallet_rounded,
+                            child: InkWell(
+                              onTap: () => Navigator.push(
+                                context,
+                                _createRoute(component),
+                              ),
+                              onLongPress: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BudgetDetailPage(
+                                    component: component,
                                   ),
                                 ),
-                                onTap: () => Navigator.push(
-                                  context,
-                                  _createRoute(component),
+                              ),
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(component.getName()),
+                                  subtitle: Text(component.budget.description),
+                                  leading: const CircleAvatar(
+                                    child: Icon(Icons.wallet_rounded),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.arrow_forward_ios),
+                                    onPressed: () => Navigator.push(
+                                      context,
+                                      _createRoute(component),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -163,33 +178,162 @@ class _BudgetFormState extends State<BudgetForm> {
     return Form(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text(
+                'Create a new budget',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _nameController,
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  hintText: 'Name',
+                ),
+                maxLength: 20,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  hintText: 'Description',
+                ),
+                maxLines: 5,
+                maxLength: 100,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<ComponentCubit>().createBudget(
+                            Budget(
+                              id: 0,
+                              name: _nameController.text,
+                              description: _descriptionController.text,
+                              createdAt: DateTime.now(),
+                            ),
+                          );
+                      Navigator.pop(context);
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('Save')],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  OutlinedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('Vinculate Budget')],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BudgetDetailPage extends StatelessWidget {
+  const BudgetDetailPage({super.key, required this.component});
+
+  final Component component;
+
+  @override
+  Widget build(BuildContext context) {
+    final budgetComponent = component as BudgetComponent;
+    Budget budget = budgetComponent.budget;
+    return AppScaffold(
+      title: component.getName(),
+      body: BlocBuilder<ComponentCubit, ComponentState>(
+        builder: (context, state) {
+          if (state is! ComponentLoaded) {
+            return const PageShimmer();
+          }
+
+          return Form(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Text(
+                      'Edit budget',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      initialValue: budgetComponent.budget.name,
+                      decoration: const InputDecoration(
+                        hintText: 'Name',
+                      ),
+                      maxLength: 20,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      onChanged: (value) =>
+                          budget = budget.copyWith(name: value),
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      initialValue: budgetComponent.budget.description,
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                      ),
+                      maxLines: 5,
+                      maxLength: 100,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      onChanged: (value) =>
+                          budget = budget.copyWith(description: value),
+                    ),
+                    const SizedBox(height: 16.0),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+      persistentFooterButtons: [
+        Column(
           children: [
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
             ElevatedButton(
               onPressed: () {
-                context.read<ComponentCubit>().createBudget(
-                      Budget(
-                        id: 0,
-                        name: _nameController.text,
-                        description: _descriptionController.text,
-                        createdAt: DateTime.now(),
-                      ),
-                    );
+                context.read<ComponentCubit>().updateBudget(budget);
                 Navigator.pop(context);
               },
-              child: const Text('Save'),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Save')],
+              ),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Cancel')],
+              ),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

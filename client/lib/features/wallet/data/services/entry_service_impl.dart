@@ -1,7 +1,6 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class EntryServiceImpl implements EntryService {
-
   EntryServiceImpl(this._entryRepository);
   final EntryRepository _entryRepository;
 

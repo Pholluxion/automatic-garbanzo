@@ -16,27 +16,45 @@ class PageShimmer extends StatelessWidget {
           Colors.white10,
         ],
       ),
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Card(
-              child: ListTile(
-                title: Container(
-                  width: 100,
-                  height: 20,
-                  color: Colors.grey,
-                ),
-                subtitle: Container(
-                  width: 100,
-                  height: 20,
-                  color: Colors.grey,
-                ),
-              ),
+      child: Column(
+        children: [
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-          );
-        },
+            margin: const EdgeInsets.all(16.0),
+            child: Container(
+              height: 100,
+              padding: const EdgeInsets.all(24.0),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 16.0),
+                  child: Card(
+                    child: ListTile(
+                      title: Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.grey,
+                      ),
+                      subtitle: Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

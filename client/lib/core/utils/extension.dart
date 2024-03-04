@@ -42,11 +42,21 @@ extension FromThemeData on ThemeData {
       ),
     );
 
+    final outlinedButtonTheme = OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+    );
+
     return copyWith(
       cardTheme: cardTheme,
       dividerTheme: dividerThemeData,
       elevatedButtonTheme: elevatedButtonThemeData,
       inputDecorationTheme: inputDecorationTheme,
+      outlinedButtonTheme: outlinedButtonTheme,
     );
   }
 }

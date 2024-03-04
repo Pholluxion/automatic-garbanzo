@@ -1,7 +1,6 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class UserBudgetServiceImpl implements UserBudgetService {
-
   UserBudgetServiceImpl(this._userBudgetRepository);
   final UserBudgetRepository _userBudgetRepository;
 

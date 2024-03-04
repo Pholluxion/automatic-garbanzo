@@ -42,7 +42,7 @@ class MateApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode: state.isDark ? ThemeMode.dark : ThemeMode.light,
-          darkTheme: FlexThemeData.dark(scheme: state.scheme)..getData,
+          darkTheme: FlexThemeData.dark(scheme: state.scheme).getData,
           theme: FlexThemeData.light(scheme: state.scheme).getData,
           home: const BudgetPage(),
         );

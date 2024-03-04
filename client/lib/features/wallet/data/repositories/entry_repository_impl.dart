@@ -5,7 +5,6 @@ import 'package:client/features/wallet/data/data.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 
 class EntryRepositoryImpl implements EntryRepository {
-
   EntryRepositoryImpl(this._supabaseClient);
   final SupabaseClient _supabaseClient;
 
@@ -73,10 +72,7 @@ class EntryRepositoryImpl implements EntryRepository {
       final response = await _supabaseClient
           .from(Tables.entry)
           .update(entry.toJson())
-          .eq(
-            'id',
-            entry.id,
-          )
+          .eq('id', entry.id)
           .select();
 
       return response.isNotEmpty;
@@ -88,7 +84,10 @@ class EntryRepositoryImpl implements EntryRepository {
   @override
   Future<List<Entry>> getAllById(int params) async {
     try {
-      final response = await _supabaseClient.from(Tables.entry).select().eq('id_pocket', params);
+      final response = await _supabaseClient
+          .from(Tables.entry)
+          .select()
+          .eq('id_pocket', params);
       return response.map((e) => EntryModel.fromJson(e)).toList();
     } catch (e) {
       throw Exception(e.toString());
