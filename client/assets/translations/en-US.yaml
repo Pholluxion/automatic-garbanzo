@@ -52,3 +52,19 @@ home:
 
 account:
     title: Account
+
+auth:
+    user_name: User name
+    please_enter_your_name: Please enter your user name
+    enter_email: Enter your email
+    valid_email_error: Please enter a valid email address
+    enter_password: Enter your password
+    password_length_error: Please enter a password that is at least 6 characters long
+    sign_in: Sign In
+    sign_up: Sign Up
+    forgot_password: Forgot your password?
+    dont_have_account: Don't have an account? Sign up
+    have_account: Already have an account? Sign in
+    send_password_reset: Send password reset email
+    back_to_sign_in: Back to sign in
+    unexpected_error: An unexpected error occurred

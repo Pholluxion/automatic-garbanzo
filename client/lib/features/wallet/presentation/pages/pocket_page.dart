@@ -25,8 +25,7 @@ class PocketPage extends StatelessWidget {
             return const PageShimmer();
           }
 
-          final components =
-              context.read<ComponentCubit>().getAllPockets(component.budget.id);
+          final components = context.read<ComponentCubit>().getAllPockets(component.budget.id);
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -62,18 +61,14 @@ class PocketPage extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      for (final component
-                          in components as List<PocketComponent>)
+                      for (final component in components as List<PocketComponent>)
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
-                              context
-                                  .read<ComponentCubit>()
-                                  .deletePocket(component.pocket.id);
+                              context.read<ComponentCubit>().deletePocket(component.pocket.id);
                             },
                             background: Container(
                               color: context.theme.primaryColor,
@@ -126,9 +121,9 @@ class PocketPage extends StatelessWidget {
           onPressed: () {
             showModalBottomSheet(
               context: context,
-              builder: (context) {
-                return PocketForm(budgetId: component.budget.id);
-              },
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (context) => PocketForm(budgetId: component.budget.id),
             );
           },
           child: Row(
@@ -172,72 +167,71 @@ class _PocketFormState extends State<PocketForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                'pocket.create'.tr(),
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'pocket.create'.tr(),
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _nameController,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: 'common.name'.tr(),
-                ),
-                maxLength: 20,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _nameController,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: 'common.name'.tr(),
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _amountController,
-                decoration: InputDecoration(
-                  hintText: 'common.amount'.tr(),
-                ),
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                maxLength: 10,
+              maxLength: 20,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _amountController,
+              decoration: InputDecoration(
+                hintText: 'common.amount'.tr(),
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  hintText: 'common.description'.tr(),
-                ),
-                maxLines: 5,
-                maxLength: 100,
-                textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              maxLength: 10,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _descriptionController,
+              decoration: InputDecoration(
+                hintText: 'common.description'.tr(),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<ComponentCubit>().createPocket(
-                        Pocket(
-                          id: 0,
-                          amount: double.parse(_amountController.text),
-                          name: _nameController.text,
-                          description: _descriptionController.text,
-                          idBudget: widget.budgetId,
-                          createdAt: DateTime.now(),
-                        ),
-                      );
-                  Navigator.pop(context);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [const Text('common.save').tr()],
-                ),
+              maxLines: 5,
+              maxLength: 100,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                context.read<ComponentCubit>().createPocket(
+                      Pocket(
+                        id: 0,
+                        amount: double.parse(_amountController.text),
+                        name: _nameController.text,
+                        description: _descriptionController.text,
+                        idBudget: widget.budgetId,
+                        createdAt: DateTime.now(),
+                      ),
+                    );
+                Navigator.pop(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [const Text('common.save').tr()],
               ),
-              const SizedBox(height: 16),
-            ],
-          ),
+            ),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
     );
@@ -246,15 +240,13 @@ class _PocketFormState extends State<PocketForm> {
 
 Route _createRoute(PocketComponent component) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        EntryPage(component: component),
+    pageBuilder: (context, animation, secondaryAnimation) => EntryPage(component: component),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 
-      final tween =
-          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
       return SlideTransition(
         position: animation.drive(tween),
@@ -299,8 +291,7 @@ class PocketDetailPage extends StatelessWidget {
                       maxLength: 20,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
-                      onChanged: (value) =>
-                          pocket = pocket.copyWith(name: value),
+                      onChanged: (value) => pocket = pocket.copyWith(name: value),
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
@@ -311,8 +302,7 @@ class PocketDetailPage extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       maxLength: 10,
-                      onChanged: (value) =>
-                          pocket = pocket.copyWith(amount: double.parse(value)),
+                      onChanged: (value) => pocket = pocket.copyWith(amount: double.parse(value)),
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
@@ -324,8 +314,7 @@ class PocketDetailPage extends StatelessWidget {
                       maxLength: 100,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
-                      onChanged: (value) =>
-                          pocket = pocket.copyWith(description: value),
+                      onChanged: (value) => pocket = pocket.copyWith(description: value),
                     ),
                     const SizedBox(height: 16.0),
                   ],

@@ -21,8 +21,7 @@ class BudgetPage extends StatelessWidget {
           }
 
           return RefreshIndicator(
-            onRefresh: () async =>
-                context.read<ComponentCubit>().getComponents(),
+            onRefresh: () async => context.read<ComponentCubit>().getComponents(),
             child: CustomScrollView(
               slivers: [
                 SliverVisibility(
@@ -56,17 +55,14 @@ class BudgetPage extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      for (final component
-                          in state.components as List<BudgetComponent>)
+                      for (final component in state.components as List<BudgetComponent>)
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
                             direction: DismissDirection.endToStart,
-                            onDismissed: (direction) => context
-                                .read<ComponentCubit>()
-                                .deleteBudget(component.budget.id),
+                            onDismissed: (direction) =>
+                                context.read<ComponentCubit>().deleteBudget(component.budget.id),
                             background: Container(
                               color: context.theme.primaryColor,
                               alignment: Alignment.centerRight,
@@ -118,6 +114,8 @@ class BudgetPage extends StatelessWidget {
           onPressed: () {
             showModalBottomSheet(
               context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
               builder: (context) => const BudgetForm(),
             );
           },
@@ -135,15 +133,13 @@ class BudgetPage extends StatelessWidget {
 
 Route _createRoute(BudgetComponent component) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        PocketPage(component: component),
+    pageBuilder: (context, animation, secondaryAnimation) => PocketPage(component: component),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 
-      final tween =
-          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
       return SlideTransition(
         position: animation.drive(tween),
@@ -176,72 +172,71 @@ class _BudgetFormState extends State<BudgetForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'budget.create'.tr(),
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'budget.create'.tr(),
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _nameController,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: 'common.name'.tr(),
-                ),
-                maxLength: 20,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _nameController,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: 'common.name'.tr(),
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  hintText: 'common.description'.tr(),
-                ),
-                maxLines: 5,
-                maxLength: 100,
-                textAlign: TextAlign.center,
+              maxLength: 20,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _descriptionController,
+              decoration: InputDecoration(
+                hintText: 'common.description'.tr(),
               ),
-              const SizedBox(height: 16),
-              Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<ComponentCubit>().createBudget(
-                            Budget(
-                              id: 0,
-                              name: _nameController.text,
-                              description: _descriptionController.text,
-                              createdAt: DateTime.now(),
-                            ),
-                          );
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('common.save'.tr())],
-                    ),
+              maxLines: 5,
+              maxLength: 100,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<ComponentCubit>().createBudget(
+                          Budget(
+                            id: 0,
+                            name: _nameController.text,
+                            description: _descriptionController.text,
+                            createdAt: DateTime.now(),
+                          ),
+                        );
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text('common.save'.tr())],
                   ),
-                  const SizedBox(height: 16),
-                  OutlinedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('budget.vinculate'.tr())],
-                    ),
+                ),
+                const SizedBox(height: 16),
+                OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text('budget.vinculate'.tr())],
                   ),
-                ],
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
     );
@@ -280,8 +275,7 @@ class BudgetDetailPage extends StatelessWidget {
                       maxLength: 20,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
-                      onChanged: (value) =>
-                          budget = budget.copyWith(name: value),
+                      onChanged: (value) => budget = budget.copyWith(name: value),
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
@@ -293,8 +287,7 @@ class BudgetDetailPage extends StatelessWidget {
                       maxLength: 100,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
-                      onChanged: (value) =>
-                          budget = budget.copyWith(description: value),
+                      onChanged: (value) => budget = budget.copyWith(description: value),
                     ),
                     const SizedBox(height: 16.0),
                   ],

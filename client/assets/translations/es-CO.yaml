@@ -52,3 +52,19 @@ home:
 
 account:
     title: Cuenta
+
+auth:
+    user_name: Nombre de usuario
+    please_enter_your_name: Por favor ingrese su nombre de usuario
+    enter_email: Ingrese su correo electrónico
+    valid_email_error: Por favor ingrese una dirección de correo electrónico válida
+    enter_password: Ingrese su contraseña
+    password_length_error: Por favor ingrese una contraseña de al menos 6 caracteres de longitud
+    sign_in: Iniciar sesión
+    sign_up: Registrarse
+    forgot_password: ¿Olvidaste tu contraseña?
+    dont_have_account: ¿No tienes una cuenta? Regístrate
+    have_account: ¿Ya tienes una cuenta? Iniciar sesión
+    send_password_reset: recuperar contraseña
+    back_to_sign_in: Volver a iniciar sesión
+    unexpected_error: Ocurrió un error inesperado
