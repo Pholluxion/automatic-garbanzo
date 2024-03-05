@@ -40,16 +40,15 @@ class BudgetRepositoryImpl extends BudgetRepository {
   @override
   Future<List<Budget>> getAll() async {
     try {
-      //TODO: Implement user id
       final userId = _supabaseClient.auth.currentUser?.id ?? '';
       final response = await _supabaseClient
           .from(
-            Tables.budget,
+            Tables.userBudget,
           )
-          .select('*, user_budget(id_user)')
-          .filter('user_budget.id_user', 'eq', userId);
+          .select('id_user, budget(*)')
+          .filter('id_user', 'eq', userId);
 
-      return response.map((e) => BudgetModel.fromJson(e)).toList();
+      return response.map((e) => BudgetModel.fromJson(e['budget'])).toList();
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -77,11 +76,7 @@ class BudgetRepositoryImpl extends BudgetRepository {
   @override
   Future<bool> update(Budget entity) async {
     try {
-      final response = await _supabaseClient
-          .from(Tables.budget)
-          .update(entity.toJson())
-          .eq('id', entity.id)
-          .select();
+      final response = await _supabaseClient.from(Tables.budget).update(entity.toJson()).eq('id', entity.id).select();
       return response.isNotEmpty;
     } catch (e) {
       throw Exception(e.toString());
