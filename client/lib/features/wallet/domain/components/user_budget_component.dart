@@ -1,7 +1,6 @@
 import 'package:client/features/wallet/domain/domain.dart';
 
 class UserBudgetComponent implements Component {
-
   UserBudgetComponent({
     required this.userBudget,
     required List<Component> componentes,
@@ -16,7 +15,7 @@ class UserBudgetComponent implements Component {
 
   @override
   String getName() {
-    return userBudget.idUser;
+    return userBudget.idUser ?? '';
   }
 
   @override

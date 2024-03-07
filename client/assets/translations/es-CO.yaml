@@ -5,6 +5,7 @@ budget:
     create: Crear un nuevo presupuesto
     edit: Editar presupuesto
     vinculate: Vincular presupuesto
+    qr_code: Escanea el código QR para vincular el presupuesto
 
 pocket:
     title: Bolsillo

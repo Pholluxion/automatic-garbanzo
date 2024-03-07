@@ -5,6 +5,7 @@ budget:
     create: Create a new budget
     edit: Edit budget
     vinculate: Vinculate budget
+    qr_code: Scan the QR code to vinculate the budget
 
 pocket:
     title: Pocket

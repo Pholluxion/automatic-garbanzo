@@ -22,6 +22,7 @@ class App extends StatelessWidget {
             ServiceLocator.instance.get<EntryService>(),
             ServiceLocator.instance.get<PocketService>(),
             ServiceLocator.instance.get<BudgetService>(),
+            ServiceLocator.instance.get<UserBudgetService>(),
           )..getComponents(),
         ),
         BlocProvider(create: (context) => BottomBarCubit()),

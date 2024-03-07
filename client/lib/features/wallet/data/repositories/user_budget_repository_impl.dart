@@ -10,11 +10,15 @@ class UserBudgetRepositoryImpl extends UserBudgetRepository {
 
   @override
   Future<bool> create(UserBudget entity) async {
+    final userId = _supabaseClient.auth.currentUser?.id ?? '';
+    final userBudget = entity.copyWith(
+      idUser: userId,
+    );
     try {
       final response = await _supabaseClient
           .from(Tables.userBudget)
           .upsert(
-            entity.toJson(),
+            userBudget.toJson(),
           )
           .select('id');
       return response.isNotEmpty;

@@ -13,11 +13,13 @@ class ComponentCubit extends Cubit<ComponentState> {
     this._entryRepository,
     this._pocketService,
     this._budgetService,
+    this._userBudgetService,
   ) : super(ComponentInitial());
 
   final EntryService _entryRepository;
   final PocketService _pocketService;
   final BudgetService _budgetService;
+  final UserBudgetService _userBudgetService;
 
   /// Get all entries, pockets and user pockets and implements the composite pattern
 
@@ -30,24 +32,19 @@ class ComponentCubit extends Cubit<ComponentState> {
       final budgets = await _budgetService.getAll();
 
       /// list entries to entry components
-      final entryComponents =
-          entries.map((entry) => EntryComponent(entry)).toList();
+      final entryComponents = entries.map((entry) => EntryComponent(entry)).toList();
 
       /// list pockets to pocket components
 
       final pocketComponents = pockets.map((pocket) {
-        final pocketEntries = entryComponents
-            .where((entry) => entry.entry.pocketId == pocket.id)
-            .toList();
+        final pocketEntries = entryComponents.where((entry) => entry.entry.pocketId == pocket.id).toList();
         return PocketComponent(pocket: pocket, componentes: pocketEntries);
       }).toList();
 
       /// list budgets to budget components
 
       final budgetComponents = budgets.map((budget) {
-        final budgetPockets = pocketComponents
-            .where((pocket) => pocket.pocket.idBudget == budget.id)
-            .toList();
+        final budgetPockets = pocketComponents.where((pocket) => pocket.pocket.idBudget == budget.id).toList();
         return BudgetComponent(budget: budget, componentes: budgetPockets);
       }).toList();
 
@@ -84,6 +81,16 @@ class ComponentCubit extends Cubit<ComponentState> {
     }
   }
 
+  void createBudgetUser(int id) async {
+    final UserBudget userBudget = UserBudget(idBudget: id);
+    try {
+      await _userBudgetService.create(userBudget);
+      getComponents();
+    } catch (e) {
+      emit(ComponentError(e.toString()));
+    }
+  }
+
   List<Component> getAllEntries(int pocketId) {
     List<EntryComponent> entries = [];
 
@@ -109,8 +116,7 @@ class ComponentCubit extends Cubit<ComponentState> {
     if (state is ComponentLoaded) {
       final componentLoaded = state as ComponentLoaded;
       final budgetComponent = componentLoaded.components.firstWhere(
-        (element) =>
-            element is BudgetComponent && element.budget.id == budgetId,
+        (element) => element is BudgetComponent && element.budget.id == budgetId,
       );
 
       final budget = budgetComponent as BudgetComponent;
@@ -196,8 +202,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   ///get total of all pockets
   String getFormatTotalBudget() {
-    if (state is ComponentLoaded &&
-        (state as ComponentLoaded).components.isEmpty) {
+    if (state is ComponentLoaded && (state as ComponentLoaded).components.isEmpty) {
       return '0';
     }
 

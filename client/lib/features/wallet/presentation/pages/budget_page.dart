@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/core/core.dart';
 import 'package:client/features/wallet/domain/domain.dart';
 import 'package:client/features/wallet/presentation/presentation.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
+final key = encrypt.Key.fromUtf8('my 32 length key................');
+final iv = encrypt.IV.fromLength(16);
+final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
 class BudgetPage extends StatelessWidget {
   const BudgetPage({super.key});
@@ -227,7 +233,13 @@ class _BudgetFormState extends State<BudgetForm> {
                 ),
                 const SizedBox(height: 16),
                 OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const QRViewExample(),
+                      ),
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text('budget.vinculate'.tr())],
@@ -260,6 +272,8 @@ class BudgetDetailPage extends StatelessWidget {
             return const PageShimmer();
           }
 
+          final plainText = budget.id.toString();
+
           return Form(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -288,6 +302,19 @@ class BudgetDetailPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
                       onChanged: (value) => budget = budget.copyWith(description: value),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'budget.qr_code'.tr(),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    QrImageView(
+                      data: plainText,
+                      version: QrVersions.auto,
+                      size: 200.0,
                     ),
                     const SizedBox(height: 16.0),
                   ],
@@ -323,4 +350,15 @@ class BudgetDetailPage extends StatelessWidget {
       ],
     );
   }
+}
+
+encryptData(String plainText) {
+  final encrypted = encrypter.encrypt(plainText, iv: iv);
+  return encrypted.base64;
+}
+
+decryptData(String encryptedText) {
+  final encrypt.Encrypted encrypted = encrypt.Encrypted.fromBase64(encryptedText);
+  final decrypted = encrypter.decrypt(encrypted, iv: iv);
+  return decrypted;
 }
