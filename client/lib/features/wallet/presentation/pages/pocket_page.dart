@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/core/core.dart';
 import 'package:client/features/wallet/domain/domain.dart';
+import 'package:client/features/wallet/presentation/components/components.dart';
 import 'package:client/features/wallet/presentation/presentation.dart';
 
 class PocketPage extends StatelessWidget {

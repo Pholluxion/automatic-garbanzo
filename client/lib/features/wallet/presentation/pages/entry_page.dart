@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client/core/utils/extension.dart';
 import 'package:client/features/wallet/domain/domain.dart';
+import 'package:client/features/wallet/presentation/components/components.dart';
 import 'package:client/features/wallet/presentation/cubit/cubit.dart';
 import 'package:client/features/wallet/presentation/widgets/widgets.dart';
 
@@ -43,8 +44,7 @@ class EntryDetailPage extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       maxLength: 10,
-                      onChanged: (value) =>
-                          entry = entry.copyWith(amount: double.parse(value)),
+                      onChanged: (value) => entry = entry.copyWith(amount: double.parse(value)),
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
@@ -56,8 +56,7 @@ class EntryDetailPage extends StatelessWidget {
                       maxLength: 100,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
-                      onChanged: (value) =>
-                          entry = entry.copyWith(description: value),
+                      onChanged: (value) => entry = entry.copyWith(description: value),
                     ),
                     const SizedBox(height: 16.0),
                     DropdownButtonFormField(
@@ -130,9 +129,7 @@ class EntryPage extends StatelessWidget {
             return const PageShimmer();
           }
 
-          final components = context
-              .read<ComponentCubit>()
-              .getAllEntries(component.pocket.id) as List<EntryComponent>;
+          final components = context.read<ComponentCubit>().getAllEntries(component.pocket.id) as List<EntryComponent>;
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -170,15 +167,12 @@ class EntryPage extends StatelessWidget {
                     [
                       for (final entryComponent in components.reversed.toList())
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: Dismissible(
                             key: UniqueKey(),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
-                              context
-                                  .read<ComponentCubit>()
-                                  .deleteEntry(entryComponent.entry.id);
+                              context.read<ComponentCubit>().deleteEntry(entryComponent.entry.id);
                             },
                             background: Container(
                               color: context.theme.primaryColor,
@@ -197,16 +191,13 @@ class EntryPage extends StatelessWidget {
                                   ),
                                   style: context.theme.textTheme.titleMedium,
                                 ),
-                                subtitle:
-                                    Text(entryComponent.entry.description),
+                                subtitle: Text(entryComponent.entry.description),
                                 leading: CircleAvatar(
-                                  backgroundColor: entryComponent.entry.type ==
-                                          EntryType.income
+                                  backgroundColor: entryComponent.entry.type == EntryType.income
                                       ? context.theme.colorScheme.primary
                                       : context.theme.colorScheme.secondary,
                                   child: Icon(
-                                    entryComponent.entry.type ==
-                                            EntryType.income
+                                    entryComponent.entry.type == EntryType.income
                                         ? Icons.arrow_upward
                                         : Icons.arrow_downward,
                                     color: context.theme.colorScheme.onPrimary,
@@ -322,8 +313,7 @@ class _EntryFormState extends State<EntryForm> {
                               padding: const EdgeInsets.only(top: 16.0),
                               child: Text(
                                 '\$ ${context.formatCurrency(_amountController.text.isEmpty ? '0' : _amountController.text)}',
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge,
+                                style: Theme.of(context).textTheme.headlineLarge,
                               ),
                             ),
                             ListenableBuilder(
@@ -333,8 +323,7 @@ class _EntryFormState extends State<EntryForm> {
                                   padding: const EdgeInsets.only(top: 16.0),
                                   child: Text(
                                     '${'common.balance'.tr()}: \$ ${getFormatTotal(widget.component)}',
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
+                                    style: Theme.of(context).textTheme.titleMedium,
                                   ),
                                 );
                               },
@@ -358,8 +347,7 @@ class _EntryFormState extends State<EntryForm> {
                         if (_amountController.text.isEmpty) {
                           return;
                         }
-                        _amountController.text = _amountController.text
-                            .substring(0, _amountController.text.length - 1);
+                        _amountController.text = _amountController.text.substring(0, _amountController.text.length - 1);
                       },
                     ),
                   ],
@@ -398,12 +386,10 @@ class _EntryFormState extends State<EntryForm> {
     double total = 0;
     if (_typeController.value == EntryType.income) {
       total = context.read<ComponentCubit>().getTotal(component) +
-          double.parse(
-              _amountController.text.isEmpty ? '0' : _amountController.text);
+          double.parse(_amountController.text.isEmpty ? '0' : _amountController.text);
     } else {
       total = context.read<ComponentCubit>().getTotal(component) -
-          double.parse(
-              _amountController.text.isEmpty ? '0' : _amountController.text);
+          double.parse(_amountController.text.isEmpty ? '0' : _amountController.text);
     }
 
     return context.formatCurrency(total.toString());
@@ -412,15 +398,13 @@ class _EntryFormState extends State<EntryForm> {
 
 Route _createRoute(Component component) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        EntryDetailPage(component: component),
+    pageBuilder: (context, animation, secondaryAnimation) => EntryDetailPage(component: component),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 
-      final tween =
-          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
       return SlideTransition(
         position: animation.drive(tween),

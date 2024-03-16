@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:client/core/core.dart';
 import 'package:client/features/wallet/domain/domain.dart';
+import 'package:client/features/wallet/presentation/components/components.dart';
 import 'package:client/features/wallet/presentation/presentation.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 final key = encrypt.Key.fromUtf8('my 32 length key................');
 final iv = encrypt.IV.fromLength(16);

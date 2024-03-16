@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
 import 'package:client/features/wallet/domain/domain.dart';
+import 'package:client/features/wallet/presentation/components/components.dart';
 
 part 'component_state.dart';
 

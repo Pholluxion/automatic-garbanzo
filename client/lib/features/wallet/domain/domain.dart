@@ -1,4 +1,3 @@
-export 'components/components.dart';
 export 'entities/entities.dart';
 export 'enums/enums.dart';
 export 'mixins/mixins.dart';
